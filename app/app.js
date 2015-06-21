@@ -7,20 +7,9 @@ import {appName, plugins} from './constants';
 
 angular.module(appName, plugins);
 
-const resolveAuthStatus = (Auth) => {
-  return Auth.$waitForAuth();
-}
-
-resolveAuthStatus.$inject = ['Auth'];
-
 const appConfig = ($routeProvider) => {
   $routeProvider
-    .when('/', {
-      template: '<ika-app></ika-app>',
-      resolve: {
-        authStatus: resolveAuthStatus
-      }
-    });
+    .when('/', {template: '<ika-app></ika-app>'});
 };
 
 appConfig.$inject = ['$routeProvider'];
