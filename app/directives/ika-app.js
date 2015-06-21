@@ -31,7 +31,7 @@ class IkaAppController {
    * @returns {void}
    */
   onChange() {
-    this.hordeOfSquid = this.$firebaseArray(store.fireArrayRef);
+    this.hordeOfSquid = this.$firebaseArray(store.ref);
   }
 
   /**
@@ -57,7 +57,7 @@ class IkaAppController {
    * @returns {void}
    */
   login() {
-    this.Auth.$authWithOAuthPopup('github', (err, data) => {
+    this.Auth.$authWithOAuthPopup('twitter', (err, data) => {
       if (err) { console.error('Login Failed!', err); }
       console.info('Authenticated successfully with payload:', data);
     });
@@ -74,8 +74,11 @@ class IkaAppController {
    * @returns {void}
    */
   save() {
+    this.post.twitterId = this.authStatus.twitter.username;
     this.post.siomeAuthId = this.authStatus.uid;
+
     action.addSquid(this.post);
+    
     this.post = void 0;
   }
 }
