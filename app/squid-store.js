@@ -6,7 +6,7 @@ const CHANGE = 'CHANGE';
 class SquadStore extends EventEmitter {
   constructor(dispatcher) {
     super();
-    this.fireArrayRef = new Firebase(`${firebaseUrl}/arr`);
+    this.ref = new Firebase(`${firebaseUrl}/squid`);
 
     dispatcher.on('addSquid', this.onAddSquid.bind(this));
     dispatcher.on('load',     this.onLoad.bind(this));
@@ -24,28 +24,18 @@ class SquadStore extends EventEmitter {
    * @param {{twitterId: string, ikaId: string, siomeAuthId: string}} post
    */
   onAddSquid(post) {
+    console.log(this.ref.orderByChild('uid').equalTo(post.siomeAuthId));
+
     const data = {
       twitterId: post.twitterId,
       ikaId: post.ikaId,
       siomeAuthId: post.siomeAuthId,
-      dateAdded: Date.now(),
-      uuid: this.uuid()
+      dateAdded: Date.now()
     };
 
-    this.fireArrayRef.push(data);
+    this.ref.push(data);
 
     this.emit(CHANGE);
-  }
-
-  /**
-   * @private
-   * @returns {string}
-   */
-  uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
   }
 }
 
