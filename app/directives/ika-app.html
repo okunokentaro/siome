@@ -17,3 +17,9 @@
     <button ng-click="ikaApp.save()">save</button>
   </form>
 </div>
+
+<div>
+  <ul>
+    <li ng-repeat="squid in ikaApp.hordeOfSquid">{{squid|json}}</li>
+  </ul>
+</div>

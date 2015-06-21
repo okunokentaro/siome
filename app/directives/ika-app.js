@@ -16,7 +16,7 @@ class IkaAppController {
     this.description = '"siome"はTwitterアカウントとイカID（ニンテンドーネットワークID）が潮目に集まるようにまとめて登録・検索ができるサービスです！イカ、よろしく〜〜〜';
 
     const fireArrayRef = new Firebase(`${firebaseUrl}/arr`);
-    this.fireArr = $firebaseArray(fireArrayRef)
+    this.hordeOfSquid = $firebaseArray(fireArrayRef);
   }
 
   /**
@@ -40,14 +40,16 @@ class IkaAppController {
    * @returns {void}
    */
   save() {
+    console.log(this.authStatus);
     const data = {
       twitterId: this.post.twitterId,
       ikaId: this.post.ikaId,
       dateAdded: Date.now(),
-      uuid: this.uuid()
+      uuid: this.uuid(),
+      siomeAuthId: this.authStatus.uid
     };
 
-    this.fireArr.$add(data);
+    this.hordeOfSquid.$add(data);
   }
 
   /**
