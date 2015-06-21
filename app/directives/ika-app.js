@@ -5,8 +5,8 @@ const directiveName = 'ikaApp';
 
 class IkaAppController {
   constructor() {
-    this.title = 'イカよろ';
-    this.description = '『イカよろ』はTwitterアカウントとイカID（ニンテンドーネットワークID）をまとめて登録・検索ができるサービスです！イカ、よろしく〜〜〜';
+    this.title = 'siome';
+    this.description = '"siome"はTwitterアカウントとイカID（ニンテンドーネットワークID）が潮目に集まるようにまとめて登録・検索ができるサービスです！イカ、よろしく〜〜〜';
   }
 }
 
