@@ -30,18 +30,11 @@ class IkaAppController {
   }
 }
 
-const template = `
-<h1>{{${directiveName}.title}}</h1>
-<div>
-  <p>{{${directiveName}.description}}</p>
-</div>
-`;
-
 const ddo = () => {
   return {
     restrict: 'E',
     scope: {},
-    template: template,
+    templateUrl: './app/directives/ika-app.html',
     controller: IkaAppController,
     controllerAs: directiveName
   };
