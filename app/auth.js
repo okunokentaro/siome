@@ -6,6 +6,6 @@ const authFactory = ($firebaseAuth) => {
   return $firebaseAuth(ref);
 };
 
-factory.$inject = ['$firebaseAuth'];
+authFactory.$inject = ['$firebaseAuth'];
 
 angular.module(appName).factory('auth', authFactory);
