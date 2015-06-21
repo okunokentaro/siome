@@ -20,9 +20,8 @@ class IkaAppController {
    */
   login() {
     this.Auth.$authWithOAuthPopup('github', (err, data) => {
-      console.log('github OAuth');
       if (err) { console.error('Login Failed!', err); }
-      console.log('Authenticated successfully with payload:', data);
+      console.info('Authenticated successfully with payload:', data);
     });
   }
 
@@ -30,7 +29,6 @@ class IkaAppController {
    * @returns {void}
    */
   logout() {
-    console.log(this.Auth);
     this.Auth.$unauth();
   }
 }
