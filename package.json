@@ -11,10 +11,12 @@
   },
   "devDependencies": {
     "babel": "^5.6.1",
+    "babelify": "^6.1.2",
     "browserify": "^10.2.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -e ./app/index.js -o ./bundle.js -t babelify"
   },
   "author": "armorik83",
   "license": "MIT"
