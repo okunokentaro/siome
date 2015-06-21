@@ -1,4 +1,5 @@
 import angular from 'angular';
+import Firebase from 'firebase';
 import {appName, firebaseUrl} from './constants';
 
 const authFactory = ($firebaseAuth) => {
