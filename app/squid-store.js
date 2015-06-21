@@ -24,18 +24,25 @@ class SquadStore extends EventEmitter {
    * @param {{twitterId: string, ikaId: string, siomeAuthId: string}} post
    */
   onAddSquid(post) {
-    console.log(this.ref.orderByChild('uid').equalTo(post.siomeAuthId));
+    this.ref.orderByChild('siomeAuthId').equalTo(post.siomeAuthId).on('value', (snapshot) => {
+      if (snapshot.val()) {
+        console.error('もう登録されてっぞ!');
+        // Do NOT emit change because the infinite loop occurs
+        return;
+      }
 
-    const data = {
-      twitterId: post.twitterId,
-      ikaId: post.ikaId,
-      siomeAuthId: post.siomeAuthId,
-      dateAdded: Date.now()
-    };
+      const data = {
+        twitterId: post.twitterId,
+        ikaId: post.ikaId,
+        siomeAuthId: post.siomeAuthId,
+        dateAdded: Date.now()
+      };
 
-    this.ref.push(data);
+      this.ref.push(data);
 
-    this.emit(CHANGE);
+      this.emit(CHANGE);
+    });
+
   }
 }
 
