@@ -16,16 +16,41 @@ const directiveName = 'ikaApp';
 class IkaAppController {
   constructor($firebaseArray, Auth) {
     IkaAppController.$inject = ['$firebaseArray', 'Auth'];
+    this.$firebaseArray = $firebaseArray;
     this.Auth = Auth;
+
+    this.initAuthStatus();
+    this.initWebsiteElements();
+
+    store.on('CHANGE', this.onChange.bind(this));
+    action.load();
+  }
+
+  /**
+   * @private
+   * @returns {void}
+   */
+  onChange() {
+    this.hordeOfSquid = this.$firebaseArray(store.fireArrayRef);
+  }
+
+  /**
+   * @private
+   * @returns {void}
+   */
+  initAuthStatus() {
     this.Auth.$waitForAuth().then((res) => {
       this.authStatus = res;
     });
+  }
 
+  /**
+   * @private
+   * @returns {void}
+   */
+  initWebsiteElements() {
     this.title = 'siome';
     this.description = '"siome"はTwitterアカウントとイカID（ニンテンドーネットワークID）が潮目に集まるようにまとめて登録・検索ができるサービスです！イカ、よろしく〜〜〜';
-
-    const fireArrayRef = new Firebase(`${firebaseUrl}/arr`);
-    this.hordeOfSquid = $firebaseArray(fireArrayRef);
   }
 
   /**
@@ -49,26 +74,9 @@ class IkaAppController {
    * @returns {void}
    */
   save() {
-    const data = {
-      twitterId: this.post.twitterId,
-      ikaId: this.post.ikaId,
-      dateAdded: Date.now(),
-      uuid: this.uuid(),
-      siomeAuthId: this.authStatus.uid
-    };
-
-    action.addSquid(data);
-  }
-
-  /**
-   * @private
-   * @returns {string}
-   */
-  uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+    this.post.siomeAuthId = this.authStatus.uid;
+    action.addSquid(this.post);
+    this.post = void 0;
   }
 }
 

@@ -10,4 +10,11 @@ export default class AppAction {
   addSquid(data) {
     this.dispatcher.emit('addSquid', data);
   }
+
+  /**
+   * @returns {void}
+   */
+  load() {
+    this.dispatcher.emit('load');
+  }
 }
