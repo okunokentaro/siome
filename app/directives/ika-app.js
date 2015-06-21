@@ -19,11 +19,12 @@ class IkaAppController {
     this.$firebaseArray = $firebaseArray;
     this.Auth = Auth;
 
-    this.initAuthStatus();
     this.initWebsiteElements();
-
     store.on('CHANGE', this.onChange.bind(this));
-    action.load();
+
+    this.initAuthStatus().then(() => {
+      action.load(this.authStatus.uid);
+    });
   }
 
   /**
@@ -32,14 +33,15 @@ class IkaAppController {
    */
   onChange() {
     this.hordeOfSquid = this.$firebaseArray(store.ref);
+    this.registered = store.registered;
   }
 
   /**
    * @private
-   * @returns {void}
+   * @returns {Promise}
    */
   initAuthStatus() {
-    this.Auth.$waitForAuth().then((res) => {
+    return this.Auth.$waitForAuth().then((res) => {
       this.authStatus = res;
     });
   }
@@ -78,8 +80,18 @@ class IkaAppController {
     this.post.siomeAuthId = this.authStatus.uid;
 
     action.addSquid(this.post);
-    
+
     this.post = void 0;
+  }
+
+  /**
+   * @returns {void}
+   */
+  update() {
+    this.post.twitterId = this.authStatus.twitter.username;
+    this.post.siomeAuthId = this.authStatus.uid;
+
+    action.updateSquid(this.post);
   }
 }
 

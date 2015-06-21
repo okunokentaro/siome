@@ -12,9 +12,18 @@ export default class AppAction {
   }
 
   /**
+   * @param {*} data
    * @returns {void}
    */
-  load() {
-    this.dispatcher.emit('load');
+  updateSquid(data) {
+    this.dispatcher.emit('updateSquid', data);
+  }
+
+  /**
+   * @param {string} siomeAuthId
+   * @returns {void}
+   */
+  load(siomeAuthId) {
+    this.dispatcher.emit('load', siomeAuthId);
   }
 }
