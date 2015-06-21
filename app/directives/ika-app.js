@@ -2,6 +2,15 @@ import angular from 'angular';
 import Firebase from 'firebase';
 import {appName, firebaseUrl} from '../constants';
 
+// Flux
+import EventEmitter from '../vendor/mini-flux/EventEmitter';
+import AppAction from '../app-action';
+import SquidStore from '../squid-store';
+const dispatcher = new EventEmitter();
+const action = new AppAction(dispatcher);
+const store = new SquidStore(dispatcher);
+
+// Constants
 const directiveName = 'ikaApp';
 
 class IkaAppController {
@@ -40,7 +49,6 @@ class IkaAppController {
    * @returns {void}
    */
   save() {
-    console.log(this.authStatus);
     const data = {
       twitterId: this.post.twitterId,
       ikaId: this.post.ikaId,
@@ -49,7 +57,7 @@ class IkaAppController {
       siomeAuthId: this.authStatus.uid
     };
 
-    this.hordeOfSquid.$add(data);
+    action.addSquid(data);
   }
 
   /**
