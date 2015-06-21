@@ -8,4 +8,4 @@ const authFactory = ($firebaseAuth) => {
 
 authFactory.$inject = ['$firebaseAuth'];
 
-angular.module(appName).factory('auth', authFactory);
+angular.module(appName).factory('Auth', authFactory);
