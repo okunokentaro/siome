@@ -2,3 +2,17 @@
 <div>
   <p>{{ikaApp.description}}</p>
 </div>
+
+<div ng-if="!ikaApp.authStatus">
+  <p>Anonymous User</p>
+  <button ng-click="ikaApp.login()">login</button>
+</div>
+<div ng-if="ikaApp.authStatus">
+  <p>{{ikaApp.authStatus.github.displayName}}</p>
+  <button ng-click="ikaApp.logout()">logout</button>
+
+  <form>
+    <label for="twitter-id">Twitterアカウント</label><input type="text" id="twitter-id" ng-model="twitterId">
+    <label for="nnid">イカID</label><input type="text" id="nnid" ng-model="nnid">
+  </form>
+</div>

@@ -4,9 +4,12 @@ import {appName} from '../constants';
 const directiveName = 'ikaApp';
 
 class IkaAppController {
-  constructor(Auth) {
-    IkaAppController.$inject = ['Auth'];
+  constructor($rootScope, Auth) {
+    IkaAppController.$inject = ['$rootScope', 'Auth'];
     this.Auth = Auth;
+    this.Auth.$waitForAuth().then((res) => {
+      this.authStatus = res;
+    });
 
     this.title = 'siome';
     this.description = '"siome"はTwitterアカウントとイカID（ニンテンドーネットワークID）が潮目に集まるようにまとめて登録・検索ができるサービスです！イカ、よろしく〜〜〜';
@@ -16,7 +19,8 @@ class IkaAppController {
    * @returns {void}
    */
   login() {
-    this.Auth.$authWithOAuthPopup('twitter', (err, data) => {
+    this.Auth.$authWithOAuthPopup('github', (err, data) => {
+      console.log('github OAuth');
       if (err) { console.error('Login Failed!', err); }
       console.log('Authenticated successfully with payload:', data);
     });
@@ -26,6 +30,7 @@ class IkaAppController {
    * @returns {void}
    */
   logout() {
+    console.log(this.Auth);
     this.Auth.$unauth();
   }
 }
