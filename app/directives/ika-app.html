@@ -24,6 +24,6 @@
 
 <div>
   <ul>
-    <li ng-repeat="squid in ikaApp.hordeOfSquid">@{{squid.twitterId}}は {{squid.ikaId}} でやってます! イカ、よろしく〜〜〜</li>
+    <li ng-repeat="squid in ikaApp.hordeOfSquid">@{{squid.twitterId}}は {{squid.ikaId}} でやってます! イカ、よろしく〜〜〜{{ikaApp.relativeTime(squid.dateModified)}}</li>
   </ul>
 </div>

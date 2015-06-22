@@ -1,5 +1,5 @@
 import angular from 'angular';
-import Firebase from 'firebase';
+import moment from 'moment';
 import {appName, firebaseUrl} from '../constants';
 
 // Flux
@@ -139,6 +139,14 @@ class IkaAppController {
       if (this.remaining === 0) { window.clearInterval(timer); }
       this.$rootScope.$apply();
     }, 1000);
+  }
+
+  /**
+   * @param {number} time - unixtime
+   * @returns {string}
+   */
+  relativeTime(time) {
+    return moment(time, 'x').fromNow();
   }
 }
 
