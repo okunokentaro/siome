@@ -67,9 +67,11 @@ class IkaAppController {
    * @returns {void}
    */
   login() {
-    this.Auth.$authWithOAuthPopup('twitter', (err, data) => {
-      if (err) { console.error('Login Failed!', err); }
+    this.Auth.$authWithOAuthPopup('twitter').then((data) => {
       console.info('Authenticated successfully with payload:', data);
+      location.reload();
+    }).catch((err) => {
+      console.error('Login Failed!', err);
     });
   }
 
@@ -78,6 +80,7 @@ class IkaAppController {
    */
   logout() {
     this.Auth.$unauth();
+    location.reload();
   }
 
   /**
