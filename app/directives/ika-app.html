@@ -13,8 +13,10 @@
 
   <form>
     <label for="ikaId">イカID</label><input type="text" id="ikaId" ng-model="ikaApp.post.ikaId">
-    <button ng-if="!ikaApp.registered" ng-click="ikaApp.save()">save</button>
-    <button ng-if= "ikaApp.registered" ng-click="ikaApp.update()">update</button>
+    <button ng-if="!ikaApp.registered" ng-disabled="!ikaApp.postable" ng-click="ikaApp.save()">save</button>
+    <button ng-if= "ikaApp.registered" ng-disabled="!ikaApp.postable" ng-click="ikaApp.update()">update</button>
+    <button ng-if= "ikaApp.registered" ng-disabled="!ikaApp.postable" ng-click="ikaApp.remove()">remove</button>
+    <p>{{ikaApp.remaining}}</p>
   </form>
 </div>
 

@@ -14,16 +14,19 @@ const store = new SquidStore(dispatcher);
 const directiveName = 'ikaApp';
 
 class IkaAppController {
-  constructor($firebaseArray, Auth) {
-    IkaAppController.$inject = ['$firebaseArray', 'Auth'];
+  constructor($rootScope, $firebaseArray, Auth) {
+    IkaAppController.$inject = ['$rootScope', '$firebaseArray', 'Auth'];
+    this.$rootScope = $rootScope;
     this.$firebaseArray = $firebaseArray;
     this.Auth = Auth;
 
     this.initWebsiteElements();
+    this.postable = true;
     store.on('CHANGE', this.onChange.bind(this));
 
     this.initAuthStatus().then(() => {
-      action.load(this.authStatus.uid);
+      const uid = this.authStatus ? this.authStatus.uid : void 0
+      action.load(uid);
     });
   }
 
@@ -76,6 +79,8 @@ class IkaAppController {
    * @returns {void}
    */
   save() {
+    this.resetPostable(Date, window, this.$rootScope);
+
     this.post.twitterId = this.authStatus.twitter.username;
     this.post.siomeAuthId = this.authStatus.uid;
 
@@ -88,10 +93,35 @@ class IkaAppController {
    * @returns {void}
    */
   update() {
+    this.resetPostable(Date, window, this.$rootScope);
+
     this.post.twitterId = this.authStatus.twitter.username;
     this.post.siomeAuthId = this.authStatus.uid;
 
     action.updateSquid(this.post);
+  }
+
+  /**
+   * @private
+   * @param {Date} Date - constructor
+   * @param {window} window - Global window
+   * @returns {void}
+   */
+  resetPostable(Date, window) {
+    const waitTime = 10000;
+    this.postable = false;
+
+    window.setTimeout(() => {
+      this.postable = true;
+      this.$rootScope.$apply();
+    }, waitTime);
+
+    this.remaining = waitTime / 1000;
+    const timer = window.setInterval(() => {
+      this.remaining--;
+      if (this.remaining === 0) { window.clearInterval(timer); }
+      this.$rootScope.$apply();
+    }, 1000);
   }
 }
 
