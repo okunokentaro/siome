@@ -20,6 +20,11 @@ class IkaAppController {
     this.$firebaseArray = $firebaseArray;
     this.Auth = Auth;
 
+    this.Auth.$onAuth = () => {
+      console.log('onAuth');
+      location.reload();
+    };
+
     this.initWebsiteElements();
     this.postable = true;
     store.on('CHANGE', this.onChange.bind(this));
@@ -93,6 +98,7 @@ class IkaAppController {
    * @returns {void}
    */
   update() {
+    if (!this.authStatus) { return console.error('Cannot update because you have not logged in'); }
     this.resetPostable(Date, window, this.$rootScope);
 
     this.post.twitterId = this.authStatus.twitter.username;
@@ -102,13 +108,21 @@ class IkaAppController {
   }
 
   /**
+   * @returns {void}
+   */
+  remove() {
+    if (!this.authStatus) { return console.error('Cannot remove because you have not logged in'); }
+    action.removeSquid(this.authStatus.uid);
+  }
+
+  /**
    * @private
    * @param {Date} Date - constructor
    * @param {window} window - Global window
    * @returns {void}
    */
   resetPostable(Date, window) {
-    const waitTime = 10000;
+    const waitTime = 3 * 1000;
     this.postable = false;
 
     window.setTimeout(() => {

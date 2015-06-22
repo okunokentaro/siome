@@ -11,12 +11,14 @@ class SquadStore extends EventEmitter {
 
     dispatcher.on('addSquid',    this.onAddSquid.bind(this));
     dispatcher.on('updateSquid', this.onUpdateSquid.bind(this));
+    dispatcher.on('removeSquid', this.onRemoveSquid.bind(this));
     dispatcher.on('load',        this.onLoad.bind(this));
   }
 
   /**
    * @private
    * @param {string} siomeAuthId
+   * @returns {void}
    */
   onLoad(siomeAuthId) {
     this.ref.orderByChild('siomeAuthId').on('child_added', (snapshot) => {
@@ -28,15 +30,17 @@ class SquadStore extends EventEmitter {
   /**
    * @private
    * @param {{twitterId: string, ikaId: string, siomeAuthId: string}} post
+   * @returns {void}
    */
   onAddSquid(post) {
-    this.ref.orderByChild('siomeAuthId').equalTo(post.siomeAuthId).on('value', (snapshot) => {
-      if (snapshot.val()) {
-        // already registered
-        // Do NOT emit change because the infinite loop occurs
-        return;
-      }
+    console.log('this.registered', this.registered);
 
+    if (this.disposer) {
+      // require off because it would rerun the remove handling
+      this.ref.off('child_added', this.disposer);
+    }
+
+    if (!this.registered) {
       const now = Date.now();
       const data = {
         twitterId: post.twitterId,
@@ -45,24 +49,37 @@ class SquadStore extends EventEmitter {
         dateAdded: now,
         dateModified: now
       };
+      this.ref.push(data, () => {
+        console.log('onComplete');
+      });
+    }
 
-      this.ref.push(data);
+    this.registered = true;
+    this.emit(CHANGE);
+  }
 
+  /**
+   * @private
+   * @param {{twitterId: string, ikaId: string, siomeAuthId: string}} post
+   * @returns {void}
+   */
+  onUpdateSquid(post) {
+    this.ref.orderByChild('siomeAuthId').equalTo(post.siomeAuthId).on('child_added', (snapshot) => {
+      post.dateModified = Date.now();
+      snapshot.ref().update(post);
       this.emit(CHANGE);
     });
   }
 
   /**
    * @private
-   * @param {{twitterId: string, ikaId: string, siomeAuthId: string}} post
+   * @param {string} siomeAuthId
+   * @returns {void}
    */
-  onUpdateSquid(post) {
-    // require bind off
-    this.ref.orderByChild('siomeAuthId').equalTo(post.siomeAuthId).off('value');
-
-    this.ref.orderByChild('siomeAuthId').equalTo(post.siomeAuthId).on('child_added', (snapshot) => {
-      post.dateModified = Date.now();
-      snapshot.ref().update(post);
+  onRemoveSquid(siomeAuthId) {
+    this.disposer = this.ref.orderByChild('siomeAuthId').equalTo(siomeAuthId).on('child_added', (snapshot) => {
+      snapshot.ref().remove();
+      this.registered = false;
       this.emit(CHANGE);
     });
   }

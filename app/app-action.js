@@ -23,6 +23,14 @@ export default class AppAction {
    * @param {string} siomeAuthId
    * @returns {void}
    */
+  removeSquid(siomeAuthId) {
+    this.dispatcher.emit('removeSquid', siomeAuthId);
+  }
+
+  /**
+   * @param {string} siomeAuthId
+   * @returns {void}
+   */
   load(siomeAuthId) {
     this.dispatcher.emit('load', siomeAuthId);
   }
