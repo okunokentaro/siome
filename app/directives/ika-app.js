@@ -21,7 +21,6 @@ class IkaAppController {
     this.Auth = Auth;
 
     this.Auth.$onAuth = () => {
-      console.log('onAuth');
       location.reload();
     };
 

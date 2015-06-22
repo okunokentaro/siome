@@ -33,8 +33,6 @@ class SquadStore extends EventEmitter {
    * @returns {void}
    */
   onAddSquid(post) {
-    console.log('this.registered', this.registered);
-
     if (this.disposer) {
       // require off because it would rerun the remove handling
       this.ref.off('child_added', this.disposer);
@@ -49,9 +47,7 @@ class SquadStore extends EventEmitter {
         dateAdded: now,
         dateModified: now
       };
-      this.ref.push(data, () => {
-        console.log('onComplete');
-      });
+      this.ref.push(data);
     }
 
     this.registered = true;
