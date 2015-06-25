@@ -4,6 +4,9 @@
     "es6": true,
     "node": true
   },
+  "globals": {
+    "window": true
+  },
   "rules": {
     "no-reserved-keys": 2,
 
@@ -80,8 +83,8 @@
     "semi": [1, "always"],
     "semi-spacing": [1, {"before": false, "after": true}],
     "space-after-keywords": [1, "always"],
-    "space-infix-ops": [1, "always"],
 
+    "space-unary-ops": 0,
     "no-underscore-dangle": 0,
 
     "no-var": 1,
