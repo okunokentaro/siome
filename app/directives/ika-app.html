@@ -1,21 +1,9 @@
 <ika-header></ika-header>
-
-<div ng-if="!ikaApp.authStatus">
-  <p>Anonymous User</p>
-  <button ng-click="ikaApp.login()">login</button>
-</div>
-<div ng-if="ikaApp.authStatus">
-  <p>@{{ikaApp.authStatus.twitter.username}} でログイン中</p>
-  <button ng-click="ikaApp.logout()">logout</button>
-
-  <form>
-    <label for="ikaId">イカID</label><input type="text" id="ikaId" ng-model="ikaApp.post.ikaId">
-    <button ng-if="!ikaApp.registered" ng-disabled="!ikaApp.postable" ng-click="ikaApp.save()">save</button>
-    <button ng-if= "ikaApp.registered" ng-disabled="!ikaApp.postable" ng-click="ikaApp.update()">update</button>
-    <button ng-if= "ikaApp.registered" ng-disabled="!ikaApp.postable" ng-click="ikaApp.remove()">remove</button>
-    <p>{{ikaApp.remaining}}</p>
-  </form>
-</div>
+<ika-entry-form
+  ika-auth-status="ikaApp.authStatus"
+  ika-registered="ikaApp.registered"
+  ika-postable="ikaApp.postable"
+></ika-entry-form>
 
 <div>
   <ul>

@@ -1,0 +1,16 @@
+<div ng-if="!ikaEntryForm.authStatus">
+  <p>Anonymous User</p>
+  <button ng-click="ikaEntryForm.login()">login</button>
+</div>
+<div ng-if="ikaEntryForm.authStatus">
+  <p>@{{ikaEntryForm.authStatus.twitter.username}} でログイン中</p>
+  <button ng-click="ikaEntryForm.logout()">logout</button>
+
+  <form>
+    <label for="ikaId">イカID</label><input type="text" id="ikaId" ng-model="ikaEntryForm.post.ikaId">
+    <button ng-if="!ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.save()">save</button>
+    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.update()">update</button>
+    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.remove()">remove</button>
+    <p>{{ikaEntryForm.remaining}}</p>
+  </form>
+</div>

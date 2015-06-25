@@ -4,34 +4,46 @@ export default class AppAction {
   }
 
   /**
-   * @param {*} data
    * @returns {void}
    */
-  addSquid(data) {
-    this.dispatcher.emit('addSquid', data);
-  }
+  applicationReady() { this.dispatcher.emit('applicationReady'); }
+
+  /**
+   * @returns {void}
+   */
+  initAuthStatus() { this.dispatcher.emit('initAuthStatus'); }
+
+  /**
+   * @returns {void}
+   */
+  login() { this.dispatcher.emit('login'); }
+
+  /**
+   * @returns {void}
+   */
+  logout() { this.dispatcher.emit('logout'); }
 
   /**
    * @param {*} data
    * @returns {void}
    */
-  updateSquid(data) {
-    this.dispatcher.emit('updateSquid', data);
-  }
+  addSquid(data) { this.dispatcher.emit('addSquid', data); }
+
+  /**
+   * @param {*} data
+   * @returns {void}
+   */
+  updateSquid(data) { this.dispatcher.emit('updateSquid', data); }
 
   /**
    * @param {string} siomeAuthId
    * @returns {void}
    */
-  removeSquid(siomeAuthId) {
-    this.dispatcher.emit('removeSquid', siomeAuthId);
-  }
+  removeSquid(siomeAuthId) { this.dispatcher.emit('removeSquid', siomeAuthId); }
 
   /**
    * @param {string} siomeAuthId
    * @returns {void}
    */
-  load(siomeAuthId) {
-    this.dispatcher.emit('load', siomeAuthId);
-  }
+  load(siomeAuthId) { this.dispatcher.emit('load', siomeAuthId); }
 }
