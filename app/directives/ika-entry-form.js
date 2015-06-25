@@ -9,6 +9,19 @@ class IkaEntryFormController {
     IkaEntryFormController.$inject = ['$rootScope'];
     this.$rootScope = $rootScope;
     this.postable = true;
+    this.post = this.post || {};
+
+    this.watch();
+  }
+
+  /**
+   * @private
+   * @returns {void}
+   */
+  watch() {
+    this.$rootScope.$watch(() => this.ikaId, (newVal) => {
+      this.post.ikaId = newVal;
+    });
   }
 
   /**
@@ -46,8 +59,9 @@ class IkaEntryFormController {
     if (!this.authStatus) { return console.error('Cannot update because you have not logged in'); }
     this.resetPostable(Date, window, this.$rootScope);
 
-    this.post.twitterId = this.authStatus.twitter.username;
+    this.post.colorNumber = this.colorNumber;
     this.post.siomeAuthId = this.authStatus.uid;
+    this.post.twitterId = this.authStatus.twitter.username;
 
     action.updateSquid(this.post);
   }
@@ -92,9 +106,11 @@ function ddo() {
     controllerAs:     directiveName,
     scope:            {},
     bindToController: {
-      authStatus: '=ikaAuthStatus',
-      registered: '=ikaRegistered',
-      postable:   '=ikaPostable'
+      authStatus:  '=ikaAuthStatus',
+      colorNumber: '=ikaColorNumber',
+      ikaId:       '=ikaIkaId',
+      registered:  '=ikaRegistered',
+      postable:    '=ikaPostable'
     }
   };
 }

@@ -21,11 +21,14 @@ class IkaPaletteController {
 
 function ddo() {
   return {
-    restrict:     'E',
-    templateUrl:  './app/directives/ika-palette.html',
-    controller:   IkaPaletteController,
-    controllerAs: directiveName,
-    scope:        {}
+    restrict:         'E',
+    templateUrl:      './app/directives/ika-palette.html',
+    controller:       IkaPaletteController,
+    controllerAs:     directiveName,
+    scope:            {},
+    bindToController: {
+      colorNumber: '=ikaColorNumber'
+    }
   };
 }
 

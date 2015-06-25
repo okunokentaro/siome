@@ -6,7 +6,9 @@ export default class AppAction {
   /**
    * @returns {void}
    */
-  applicationReady() { this.dispatcher.emit('applicationReady'); }
+  applicationReady() {
+    this.dispatcher.emit('applicationReady');
+  }
 
   /**
    * @returns {void}
@@ -46,4 +48,10 @@ export default class AppAction {
    * @returns {void}
    */
   load(siomeAuthId) { this.dispatcher.emit('load', siomeAuthId); }
+
+  /**
+   * @param {number} n
+   * @returns {void}
+   */
+  setColor(n) { this.dispatcher.emit('setColor', n); }
 }

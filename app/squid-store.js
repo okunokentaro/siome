@@ -4,18 +4,18 @@ import EventEmitter from './vendor/mini-flux/EventEmitter';
 
 const CHANGE = 'CHANGE';
 
-class SquadStore extends EventEmitter {
+class SquidStore extends EventEmitter {
   constructor(dispatcher) {
     super();
     this.ref = new Firebase(`${firebaseUrl}/squid`);
-    this.registered = false;
 
     /* eslint-disable no-multi-spaces */
-    dispatcher.on('onApplicationReady', this.onApplicationReady.bind(this));
-    dispatcher.on('addSquid',           this.onAddSquid        .bind(this));
-    dispatcher.on('updateSquid',        this.onUpdateSquid     .bind(this));
-    dispatcher.on('removeSquid',        this.onRemoveSquid     .bind(this));
-    dispatcher.on('load',               this.onLoad            .bind(this));
+    dispatcher.on('applicationReady', this.onApplicationReady.bind(this));
+    dispatcher.on('addSquid',         this.onAddSquid        .bind(this));
+    dispatcher.on('updateSquid',      this.onUpdateSquid     .bind(this));
+    dispatcher.on('removeSquid',      this.onRemoveSquid     .bind(this));
+    dispatcher.on('load',             this.onLoad            .bind(this));
+    dispatcher.on('setColor',         this.onSetColor        .bind(this));
     /* eslint-enable no-multi-spaces */
   }
 
@@ -24,7 +24,13 @@ class SquadStore extends EventEmitter {
    * @returns {void}
    */
   onApplicationReady() {
-    // noop
+    this.registered = false;
+    this.selfData = {
+      ikaId:       '',
+      colorNumber: void 0
+    };
+
+    this.emit(CHANGE);
   }
 
   /**
@@ -36,7 +42,13 @@ class SquadStore extends EventEmitter {
     this.ref
       .orderByChild('siomeAuthId')
       .on('child_added', (snapshot) => {
-        if (snapshot.val().siomeAuthId === siomeAuthId) { this.registered = true; }
+        if (snapshot.val().siomeAuthId === siomeAuthId) {
+          this.registered = true;
+          this.selfData = {
+            ikaId:       snapshot.val().ikaId,
+            colorNumber: snapshot.val().colorNumber
+          };
+        }
         this.emit(CHANGE);
       });
   }
@@ -117,6 +129,16 @@ class SquadStore extends EventEmitter {
         this.emit(CHANGE);
       });
   }
+
+  /**
+   * @private
+   * @param {number} colorNumber
+   * @returns {void}
+   */
+  onSetColor(colorNumber) {
+    this.colorNumber = colorNumber;
+    this.emit(CHANGE);
+  }
 }
 
-export default SquadStore;
+export default SquidStore;

@@ -37,6 +37,14 @@ class IkaAppController {
   onSquidStoreChange() {
     this.hordeOfSquid = this.$firebaseArray(squidStore.ref);
     this.registered = squidStore.registered;
+
+    this.colorNumber = 0;
+    if (squidStore.selfData) {
+      this.ikaId = squidStore.selfData.ikaId;
+      this.colorNumber = squidStore.colorNumber !== void 0 && squidStore.colorNumber !== null
+        ? squidStore.colorNumber
+        : squidStore.selfData.colorNumber;
+    }
   }
 
   /**

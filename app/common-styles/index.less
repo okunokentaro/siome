@@ -30,6 +30,48 @@ ika-entry-form {
   background: #fff;
 }
 
+ika-palette {
+  display: block;
+
+  button {
+    -webkit-appearance: none;
+    width: 32px;
+    height: 32px;
+    border: none;
+    margin: 1.2rem;
+    border-radius: 6px;
+    border: 2px solid #fff;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  @color-0: #e86b4e;
+  @color-1: #2341a4;
+  @color-2: #cb40cc;
+  @color-3: #98f000;
+  @color-4: #791e8a;
+  @color-5: #75d1cc;
+  @color-6: #3d3c2e;
+
+  #color-0 { background-color: @color-0; }
+  #color-1 { background-color: @color-1; }
+  #color-2 { background-color: @color-2; }
+  #color-3 { background-color: @color-3; }
+  #color-4 { background-color: @color-4; }
+  #color-5 { background-color: @color-5; }
+  #color-6 { background-color: @color-6; }
+
+  #color-0.active { box-shadow: 0 0 1px 3px @color-0; }
+  #color-1.active { box-shadow: 0 0 1px 3px @color-1; }
+  #color-2.active { box-shadow: 0 0 1px 3px @color-2; }
+  #color-3.active { box-shadow: 0 0 1px 3px @color-3; }
+  #color-4.active { box-shadow: 0 0 1px 3px @color-4; }
+  #color-5.active { box-shadow: 0 0 1px 3px @color-5; }
+  #color-6.active { box-shadow: 0 0 1px 3px @color-6; }
+}
+
 #siome-logo {
   width: 400px;
   height: 150px;
