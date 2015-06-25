@@ -7,10 +7,10 @@ import {appName, plugins} from './constants';
 
 angular.module(appName, plugins);
 
-const appConfig = ($routeProvider) => {
+function appConfig($routeProvider) {
   $routeProvider
     .when('/', {template: '<ika-app></ika-app>'});
-};
+}
 
 appConfig.$inject = ['$routeProvider'];
 

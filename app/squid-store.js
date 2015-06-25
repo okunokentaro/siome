@@ -1,5 +1,6 @@
+import Firebase from 'firebase';
 import {firebaseUrl} from './constants';
-import EventEmitter from "./vendor/mini-flux/EventEmitter"
+import EventEmitter from './vendor/mini-flux/EventEmitter';
 
 const CHANGE = 'CHANGE';
 
@@ -9,10 +10,12 @@ class SquadStore extends EventEmitter {
     this.ref = new Firebase(`${firebaseUrl}/squid`);
     this.registered = false;
 
-    dispatcher.on('addSquid',    this.onAddSquid.bind(this));
+    /* eslint-disable no-multi-spaces */
+    dispatcher.on('addSquid',    this.onAddSquid   .bind(this));
     dispatcher.on('updateSquid', this.onUpdateSquid.bind(this));
     dispatcher.on('removeSquid', this.onRemoveSquid.bind(this));
-    dispatcher.on('load',        this.onLoad.bind(this));
+    dispatcher.on('load',        this.onLoad       .bind(this));
+    /* eslint-enable no-multi-spaces */
   }
 
   /**
@@ -21,10 +24,12 @@ class SquadStore extends EventEmitter {
    * @returns {void}
    */
   onLoad(siomeAuthId) {
-    this.ref.orderByChild('siomeAuthId').on('child_added', (snapshot) => {
-      if (snapshot.val().siomeAuthId === siomeAuthId) { this.registered = true; }
-      this.emit(CHANGE);
-    });
+    this.ref
+      .orderByChild('siomeAuthId')
+      .on('child_added', (snapshot) => {
+        if (snapshot.val().siomeAuthId === siomeAuthId) { this.registered = true; }
+        this.emit(CHANGE);
+      });
   }
 
   /**
@@ -41,10 +46,10 @@ class SquadStore extends EventEmitter {
     if (!this.registered) {
       const now = Date.now();
       const data = {
-        twitterId: post.twitterId,
-        ikaId: post.ikaId,
-        siomeAuthId: post.siomeAuthId,
-        dateAdded: now,
+        twitterId:    post.twitterId,
+        ikaId:        post.ikaId,
+        siomeAuthId:  post.siomeAuthId,
+        dateAdded:    now,
         dateModified: now
       };
       this.ref.push(data);
@@ -60,11 +65,14 @@ class SquadStore extends EventEmitter {
    * @returns {void}
    */
   onUpdateSquid(post) {
-    this.ref.orderByChild('siomeAuthId').equalTo(post.siomeAuthId).on('child_added', (snapshot) => {
-      post.dateModified = Date.now();
-      snapshot.ref().update(post);
-      this.emit(CHANGE);
-    });
+    this.ref
+      .orderByChild('siomeAuthId')
+      .equalTo(post.siomeAuthId)
+      .on('child_added', (snapshot) => {
+        post.dateModified = Date.now();
+        snapshot.ref().update(post);
+        this.emit(CHANGE);
+      });
   }
 
   /**
@@ -73,11 +81,14 @@ class SquadStore extends EventEmitter {
    * @returns {void}
    */
   onRemoveSquid(siomeAuthId) {
-    this.disposer = this.ref.orderByChild('siomeAuthId').equalTo(siomeAuthId).on('child_added', (snapshot) => {
-      snapshot.ref().remove();
-      this.registered = false;
-      this.emit(CHANGE);
-    });
+    this.disposer = this.ref
+      .orderByChild('siomeAuthId')
+      .equalTo(siomeAuthId)
+      .on('child_added', (snapshot) => {
+        snapshot.ref().remove();
+        this.registered = false;
+        this.emit(CHANGE);
+      });
   }
 }
 

@@ -1,6 +1,6 @@
 import angular from 'angular';
 import moment from 'moment';
-import {appName, firebaseUrl} from '../constants';
+import {appName} from '../constants';
 
 // Flux
 import EventEmitter from '../vendor/mini-flux/EventEmitter';
@@ -9,6 +9,8 @@ import SquidStore from '../squid-store';
 const dispatcher = new EventEmitter();
 const action = new AppAction(dispatcher);
 const store = new SquidStore(dispatcher);
+
+const location = window.location;
 
 // Constants
 const directiveName = 'ikaApp';
@@ -29,7 +31,7 @@ class IkaAppController {
     store.on('CHANGE', this.onChange.bind(this));
 
     this.initAuthStatus().then(() => {
-      const uid = this.authStatus ? this.authStatus.uid : void 0
+      const uid = this.authStatus ? this.authStatus.uid : void 0;
       action.load(uid);
     });
   }
@@ -149,14 +151,14 @@ class IkaAppController {
   }
 }
 
-const ddo = () => {
+function ddo() {
   return {
-    restrict: 'E',
-    scope: {},
-    templateUrl: './app/directives/ika-app.html',
-    controller: IkaAppController,
+    restrict:     'E',
+    scope:        {},
+    templateUrl:  './app/directives/ika-app.html',
+    controller:   IkaAppController,
     controllerAs: directiveName
   };
-};
+}
 
 angular.module(appName).directive(directiveName, ddo);
