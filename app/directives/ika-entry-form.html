@@ -9,8 +9,8 @@
   <form>
     <label for="ikaId">イカID</label><input type="text" id="ikaId" ng-model="ikaEntryForm.post.ikaId">
     <button ng-if="!ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.save()">save</button>
-    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.update()">update</button>
-    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.remove()">remove</button>
+    <button ng-if=" ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.update()">update</button>
+    <button ng-if=" ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.remove()">remove</button>
     <p>{{ikaEntryForm.remaining}}</p>
   </form>
 </div>
