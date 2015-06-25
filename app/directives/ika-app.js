@@ -26,7 +26,6 @@ class IkaAppController {
       location.reload();
     };
 
-    this.initWebsiteElements();
     this.postable = true;
     store.on('CHANGE', this.onChange.bind(this));
 
@@ -53,15 +52,6 @@ class IkaAppController {
     return this.Auth.$waitForAuth().then((res) => {
       this.authStatus = res;
     });
-  }
-
-  /**
-   * @private
-   * @returns {void}
-   */
-  initWebsiteElements() {
-    this.title = 'siome';
-    this.description = '"siome"はTwitterアカウントとイカID（ニンテンドーネットワークID）が潮目に集まるようにまとめて登録・検索ができるサービスです！イカ、よろしく〜〜〜';
   }
 
   /**
