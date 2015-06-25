@@ -5,7 +5,8 @@
     "node": true
   },
   "globals": {
-    "window": true
+    "window": true,
+    "document": true
   },
   "rules": {
     "no-reserved-keys": 2,
