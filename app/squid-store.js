@@ -52,20 +52,38 @@ class SquadStore extends EventEmitter {
       this.ref.off('child_added', this.disposer);
     }
 
-    if (!this.registered) {
-      const now = Date.now();
-      const data = {
-        twitterId:    post.twitterId,
-        ikaId:        post.ikaId,
-        siomeAuthId:  post.siomeAuthId,
-        dateAdded:    now,
-        dateModified: now
-      };
-      this.ref.push(data);
-    }
+    let onValueDisposer = void 0;
+    const checkingExists = new Promise((resolve) => {
+      onValueDisposer = this.ref
+        .orderByChild('siomeAuthId')
+        .equalTo(post.siomeAuthId)
+        .on('value', (snapshot) => {
+          let alreadyExists = false;
+          if (snapshot.val()) {
+            console.error('Cannot added because already exists');
+            alreadyExists = true;
+          }
+          resolve(alreadyExists);
+        });
+    });
 
-    this.registered = true;
-    this.emit(CHANGE);
+    checkingExists.then((exists) => {
+      if (!exists && !this.registered) {
+        const now = Date.now();
+        const data = {
+          twitterId:    post.twitterId,
+          ikaId:        post.ikaId,
+          siomeAuthId:  post.siomeAuthId,
+          dateAdded:    now,
+          dateModified: now
+        };
+        this.ref.push(data);
+      }
+
+      this.registered = true;
+      this.ref.off('value', onValueDisposer);
+      this.emit(CHANGE);
+    });
   }
 
   /**
