@@ -11,11 +11,20 @@ class SquadStore extends EventEmitter {
     this.registered = false;
 
     /* eslint-disable no-multi-spaces */
-    dispatcher.on('addSquid',    this.onAddSquid   .bind(this));
-    dispatcher.on('updateSquid', this.onUpdateSquid.bind(this));
-    dispatcher.on('removeSquid', this.onRemoveSquid.bind(this));
-    dispatcher.on('load',        this.onLoad       .bind(this));
+    dispatcher.on('onApplicationReady', this.onApplicationReady.bind(this));
+    dispatcher.on('addSquid',           this.onAddSquid        .bind(this));
+    dispatcher.on('updateSquid',        this.onUpdateSquid     .bind(this));
+    dispatcher.on('removeSquid',        this.onRemoveSquid     .bind(this));
+    dispatcher.on('load',               this.onLoad            .bind(this));
     /* eslint-enable no-multi-spaces */
+  }
+
+  /**
+   * @private
+   * @returns {void}
+   */
+  onApplicationReady() {
+    // noop
   }
 
   /**
