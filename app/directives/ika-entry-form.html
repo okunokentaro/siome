@@ -2,7 +2,7 @@
   <button id="ika-login" ng-click="ikaEntryForm.login()"><img src="./app/images/button-login.png" alt="Twitterでログイン!"></button>
 </div>
 <div ng-if="ikaEntryForm.authStatus">
-  <p>
+  <p class="login-info">
     <a href="https://twitter.com/{{ikaEntryForm.authStatus.twitter.username}}">@{{ikaEntryForm.authStatus.twitter.username}}</a>でログイン中だよ
     <button id="ika-logout" ng-click="ikaEntryForm.logout()">ログアウト</button>
   </p>

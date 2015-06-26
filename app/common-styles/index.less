@@ -1,3 +1,10 @@
+.user-select {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
 * {
   color: #333333;
   font-size: 100%;
@@ -27,11 +34,18 @@ ika-header {
 
 ika-entry-form {
   display: block;
-  background: #fff;
+  background: linear-gradient(#fff, rgba(0, 0, 0, 0));
+  padding-bottom: 3rem;
+
+  .login-info {
+    padding: 1.4rem 0 2rem;
+  }
 }
 
 ika-palette {
+  .user-select;
   display: block;
+  cursor: default;
 
   button {
     -webkit-appearance: none;
@@ -41,6 +55,7 @@ ika-palette {
     margin: 1.2rem;
     border-radius: 6px;
     border: 2px solid #fff;
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0);
 
     &:focus {
       outline: none;
@@ -63,13 +78,16 @@ ika-palette {
   #color-5 { background-color: @color-5; }
   #color-6 { background-color: @color-6; }
 
-  #color-0.active { box-shadow: 0 0 1px 3px @color-0; }
-  #color-1.active { box-shadow: 0 0 1px 3px @color-1; }
-  #color-2.active { box-shadow: 0 0 1px 3px @color-2; }
-  #color-3.active { box-shadow: 0 0 1px 3px @color-3; }
-  #color-4.active { box-shadow: 0 0 1px 3px @color-4; }
-  #color-5.active { box-shadow: 0 0 1px 3px @color-5; }
-  #color-6.active { box-shadow: 0 0 1px 3px @color-6; }
+  .active {
+    transition: box-shadow .2s ease;
+  }
+  #color-0.active { box-shadow: 0 0 1px 5px @color-0; }
+  #color-1.active { box-shadow: 0 0 1px 5px @color-1; }
+  #color-2.active { box-shadow: 0 0 1px 5px @color-2; }
+  #color-3.active { box-shadow: 0 0 1px 5px @color-3; }
+  #color-4.active { box-shadow: 0 0 1px 5px @color-4; }
+  #color-5.active { box-shadow: 0 0 1px 5px @color-5; }
+  #color-6.active { box-shadow: 0 0 1px 5px @color-6; }
 }
 
 #siome-logo {
@@ -101,6 +119,7 @@ ika-palette {
 #ika-logout {
   @color: #DD2A3C;
 
+  margin-left: 1rem;
   -webkit-appearance: none;
   background: #fff;
   border: 2px solid @color;
