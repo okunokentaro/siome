@@ -9,11 +9,11 @@
 
   <form>
     <label for="ikaId">イカID</label><input type="text" id="ikaId" ng-model="ikaEntryForm.post.ikaId">
+    <ika-palette ika-color-number="ikaEntryForm.colorNumber"></ika-palette>
     <button ng-if="!ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.save()">save</button>
     <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.update()">update</button>
     <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.remove()">remove</button>
     <p ng-show="0 < ikaEntryForm.remaining">ちょっと待ってね</p>
     <p ng-show="!ikaEntryForm.remaining">&nbsp;</p>
-    <ika-palette ika-color-number="ikaEntryForm.colorNumber"></ika-palette>
   </form>
 </div>
