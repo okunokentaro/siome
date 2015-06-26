@@ -24,6 +24,19 @@ class IkaBalloonController {
   relativeTime(time) {
     return moment(time, 'x').fromNow();
   }
+
+  /**
+   * @param {number} time - dateAdded unixtime
+   */
+  offset(time) {
+    const timeStr = (time || 0).toString();
+    let offsetVal = parseInt(timeStr.substr(-2, 2), 10);
+    const posinega = offsetVal % 2 === 0 ? 1 : -1;
+    offsetVal *= posinega;
+    return {
+      left: `${offsetVal}px`
+    };
+  }
 }
 
 function ddo() {

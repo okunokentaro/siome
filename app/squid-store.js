@@ -89,7 +89,8 @@ class SquidStore extends EventEmitter {
           siomeAuthId:  post.siomeAuthId,
           twitterId:    post.twitterId,
           dateAdded:    now,
-          dateModified: now
+          dateModified: now,
+          order:        now * -1 // reverse sort order
         };
         this.ref.off('value', onValueDisposer);
         this.ref.push(data);

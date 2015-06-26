@@ -1,36 +1,38 @@
-<div class="balloon-body" ng-class="color-{{ikaBalloon.squid.colorNumber}}">
-  <div class="avatar-side">
-    <img src="{{ikaBalloon.squid.avatarUrl}}" alt="@{{ikaBalloon.squid.twitterId}}">
-  </div>
-  <div class="message-side">
-    <p class="message" ng-if="ikaBalloon.squid.colorNumber === 0">
-      <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってます！
-    </p>
+<div class="balloon-body" ng-class="'color-'+[ikaBalloon.squid.colorNumber]" ng-style="ikaBalloon.offset(ikaBalloon.squid.dateModified)">
+  <div class="flex-wrapper">
+    <div class="avatar-side">
+      <a href="https://twitter.com/{{ikaBalloon.squid.twitterId}}"><img ng-src="{{ikaBalloon.squid.avatarUrl}}" alt="@{{ikaBalloon.squid.twitterId}}"></a>
+    </div>
+    <div class="message-side">
+      <p class="message" ng-if="ikaBalloon.squid.colorNumber === 0">
+        <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってます！
+      </p>
 
-    <p class="message" ng-if="ikaBalloon.squid.colorNumber === 1">
-      <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってます！
-    </p>
+      <p class="message" ng-if="ikaBalloon.squid.colorNumber === 1">
+        <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってます！
+      </p>
 
-    <p class="message" ng-if="ikaBalloon.squid.colorNumber === 2">
-      <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってるよ！　イカ、よろしくーーー！
-    </p>
+      <p class="message" ng-if="ikaBalloon.squid.colorNumber === 2">
+        <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってるよ！　イカ、よろしくーーー！
+      </p>
 
-    <p class="message" ng-if="ikaBalloon.squid.colorNumber === 3">
-      <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってるよ　イカ、よろしく〜〜〜
-    </p>
+      <p class="message" ng-if="ikaBalloon.squid.colorNumber === 3">
+        <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってるよ　イカ、よろしく〜〜〜
+      </p>
 
-    <p class="message" ng-if="ikaBalloon.squid.colorNumber === 4">
-      ちゅーーす　<ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってんだわ  よろしくネー
-    </p>
+      <p class="message" ng-if="ikaBalloon.squid.colorNumber === 4">
+        ちゅーーす　<ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやってんだわ  よろしくネー
+      </p>
 
-    <p class="message" ng-if="ikaBalloon.squid.colorNumber === 5">
-      <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやっとるぞ　確認されたしーッ！
-    </p>
+      <p class="message" ng-if="ikaBalloon.squid.colorNumber === 5">
+        <ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやっとるぞ　確認されたしーッ！
+      </p>
 
-    <p class="message" ng-if="ikaBalloon.squid.colorNumber === 6">
-      に&quot;！（<ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやっている！）
-    </p>
+      <p class="message" ng-if="ikaBalloon.squid.colorNumber === 6">
+        に&quot;！（<ika-twi t-id="twiId"></ika-twi>は<ika-ikaid i-id="ikaId"></ika-ikaid>でやっている！）
+      </p>
 
-    <p class="relative-time">{{ikaBalloon.relativeTime(ikaBalloon.squid.dateModified)}}</p>
+      <p class="relative-time">{{ikaBalloon.relativeTime(ikaBalloon.squid.dateModified)}}</p>
+    </div>
   </div>
 </div>
