@@ -1,8 +1,15 @@
-.user-select {
+.user-select-none {
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.user-select-text {
+  -webkit-user-select: text;
+     -moz-user-select: text;
+      -ms-user-select: text;
+          user-select: text;
 }
 
 * {
@@ -35,15 +42,23 @@ ika-header {
 ika-entry-form {
   display: block;
   background: linear-gradient(#fff, rgba(0, 0, 0, 0));
-  padding-bottom: 3rem;
+  padding-bottom: 2rem;
 
   .login-info {
     padding: 1.4rem 0 2rem;
   }
 }
 
+@color-0: #e86b4e;
+@color-1: #2341a4;
+@color-2: #cb40cc;
+@color-3: #98f000;
+@color-4: #791e8a;
+@color-5: #75d1cc;
+@color-6: #3d3c2e;
+
 ika-palette {
-  .user-select;
+  .user-select-none;
   display: block;
   cursor: default;
 
@@ -61,14 +76,6 @@ ika-palette {
       outline: none;
     }
   }
-
-  @color-0: #e86b4e;
-  @color-1: #2341a4;
-  @color-2: #cb40cc;
-  @color-3: #98f000;
-  @color-4: #791e8a;
-  @color-5: #75d1cc;
-  @color-6: #3d3c2e;
 
   #color-0 { background-color: @color-0; }
   #color-1 { background-color: @color-1; }
@@ -91,22 +98,97 @@ ika-palette {
 }
 
 ika-balloon {
+  .user-select-none;
   display: block;
-  margin: 3rem auto;
+  margin: 2rem auto;
 
+  @basic-padding: 1.2rem;
   .balloon-body {
     display: inline-block;
-    padding: 2rem 4rem 1.4rem;
+    position: relative;
+    padding: @basic-padding @basic-padding * 1.6 @basic-padding * 1.1;
     background: #f99;
+    border-radius: 16px;
+    border-width: 8px;
+    border-style: solid;
+  }
+
+  .flex-wrapper {
+    display: flex;
+  }
+
+  .avatar-side {
+    img {
+      border-radius: 6px;
+    }
+  }
+
+  .message-side {
+    .user-select-text;
+    font-weight: bold;
   }
 
   p {
     margin: 0;
   }
 
+  .message {
+    padding: 0 1rem;
+    font-size: 1.8rem;
+    text-align: center;
+
+    .ika-id-label { margin: 0 0 0 0.5em; }
+    .ika-id {
+      margin: 0 0.5em 0 0.5em;
+      font-size: 1.5em;
+    }
+  }
+
   .relative-time {
+    font-weight: normal;
     text-align: right;
   }
+
+  .balloon-body.color-0 { background: url("./app/images/stripe-0.gif"); }
+  .balloon-body.color-1 { background: url("./app/images/stripe-1.gif"); }
+  .balloon-body.color-2 { background: url("./app/images/stripe-2.gif"); }
+  .balloon-body.color-3 { background: url("./app/images/stripe-3.gif"); }
+  .balloon-body.color-4 { background: url("./app/images/stripe-4.gif"); }
+  .balloon-body.color-5 { background: url("./app/images/stripe-5.gif"); }
+  .balloon-body.color-6 { background: url("./app/images/stripe-6.gif"); }
+
+  .balloon-body.color-0 { border-color: @color-0; }
+  .balloon-body.color-1 { border-color: @color-1; }
+  .balloon-body.color-2 { border-color: @color-2; }
+  .balloon-body.color-3 { border-color: @color-3; }
+  .balloon-body.color-4 { border-color: @color-4; }
+  .balloon-body.color-5 { border-color: @color-5; }
+  .balloon-body.color-6 { border-color: @color-6; }
+
+  .color-0 a, .color-0 .ika-id { color: #fff; }
+  .color-1 a, .color-1 .ika-id { color: #fefc2e; }
+  .color-2 a, .color-2 .ika-id { color: #fff; }
+  .color-3 a, .color-3 .ika-id { color: #008b64; }
+  .color-4 a, .color-4 .ika-id { color: #fefc2e; }
+  .color-5 a, .color-5 .ika-id { color: #fff; }
+  .color-6 a, .color-6 .ika-id { color: #fefc2e; }
+
+  @outline: 1px;
+  .color-0 .ika-id { text-shadow: #4b1515 @outline @outline 0px, #4b1515 -1 * @outline @outline 0px, #4b1515 @outline -1 * @outline 0px, #4b1515 -1 * @outline -1 * @outline 0px; }
+  .color-1 .ika-id { text-shadow: black @outline @outline 0px, black -1 * @outline @outline 0px, black @outline -1 * @outline 0px, black -1 * @outline -1 * @outline 0px; }
+  .color-2 .ika-id { text-shadow: #420044 @outline @outline 0px, #420044 -1 * @outline @outline 0px, #420044 @outline -1 * @outline 0px, #420044 -1 * @outline -1 * @outline 0px; }
+  .color-3 .ika-id { text-shadow: white @outline @outline 0px, white -1 * @outline @outline 0px, white @outline -1 * @outline 0px, white -1 * @outline -1 * @outline 0px; }
+  .color-4 .ika-id { text-shadow: black @outline @outline 0px, black -1 * @outline @outline 0px, black @outline -1 * @outline 0px, black -1 * @outline -1 * @outline 0px; }
+  .color-5 .ika-id { text-shadow: #002a22 @outline @outline 0px, #002a22 -1 * @outline @outline 0px, #002a22 @outline -1 * @outline 0px, #002a22 -1 * @outline -1 * @outline 0px; }
+  .color-6 .ika-id { text-shadow: black @outline @outline 0px, black -1 * @outline @outline 0px, black @outline -1 * @outline 0px, black -1 * @outline -1 * @outline 0px; }
+
+  .color-0 .message, .color-0 .ika-id-label, .color-0 .relative-time { color: #4b1515; }
+  .color-1 .message, .color-1 .ika-id-label, .color-1 .relative-time { color: #fff; }
+  .color-2 .message, .color-2 .ika-id-label, .color-2 .relative-time { color: #420044; }
+  .color-3 .message, .color-3 .ika-id-label, .color-3 .relative-time { color: #294529; }
+  .color-4 .message, .color-4 .ika-id-label, .color-4 .relative-time { color: #fff; }
+  .color-5 .message, .color-5 .ika-id-label, .color-5 .relative-time { color: #002a22; }
+  .color-6 .message, .color-6 .ika-id-label, .color-6 .relative-time { color: #fff; }
 }
 
 #siome-logo {
