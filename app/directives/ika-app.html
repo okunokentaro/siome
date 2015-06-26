@@ -8,7 +8,5 @@
 ></ika-entry-form>
 
 <div>
-  <ul>
-    <li ng-repeat="squid in ikaApp.hordeOfSquid">@{{squid.twitterId}}は {{squid.ikaId}} でやってます! イカ、よろしく〜〜〜{{ikaApp.relativeTime(squid.dateModified)}}</li>
-  </ul>
+  <ika-balloon ika-squid="squid" ng-repeat="squid in ikaApp.hordeOfSquid"></ika-balloon>
 </div>

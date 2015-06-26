@@ -1,5 +1,4 @@
 import angular from 'angular';
-import moment from 'moment';
 import {appName} from '../constants';
 
 // Flux
@@ -11,8 +10,6 @@ const dispatcher = new EventEmitter();
 export const action = new AppAction(dispatcher);
 const squidStore = new SquidStore(dispatcher);
 const authStore = new AuthStore(dispatcher);
-
-const location = window.location;
 
 // Constants
 const directiveName = 'ikaApp';
@@ -57,14 +54,6 @@ class IkaAppController {
       const uid = this.authStatus ? this.authStatus.uid : void 0;
       action.load(uid);
     });
-  }
-
-  /**
-   * @param {number} time - unixtime
-   * @returns {string}
-   */
-  relativeTime(time) {
-    return moment(time, 'x').fromNow();
   }
 }
 
