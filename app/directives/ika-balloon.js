@@ -2,6 +2,9 @@ import angular from 'angular';
 import moment from 'moment';
 import {appName} from '../constants';
 
+import 'moment/locale/ja';
+moment.locale('ja');
+
 const directiveName = 'ikaBalloon';
 
 class IkaBalloonController {
@@ -40,13 +43,10 @@ angular.module(appName).directive(directiveName, ddo);
 
 function ikaTwi() {
   return {
-    restrict:         'E',
-    template:         '<a ng-href="https://twitter.com/{{c.id}}">@{{c.id}}</a>',
-    controller:       () => {},
-    controllerAs:     'c',
-    scope:            {},
-    bindToController: {
-      id: '=twiId'
+    restrict: 'E',
+    template: '<a ng-href="https://twitter.com/{{id}}">@{{id}}</a>',
+    scope:    {
+      id: '=tId'
     }
   };
 }
@@ -55,13 +55,10 @@ angular.module(appName).directive('ikaTwi', ikaTwi);
 
 function ikaIkaid() {
   return {
-    restrict:         'E',
-    template:         '<span class="ika-id-label">イカID:</span><span class="ika-id">{{c.id}}</span>',
-    controller:       () => {},
-    controllerAs:     'c',
-    scope:            {},
-    bindToController: {
-      id: '=ikaId'
+    restrict: 'E',
+    template: '<span class="ika-id-label">イカID:</span><span class="ika-id">{{id}}</span>',
+    scope:    {
+      id: '=iId'
     }
   };
 }
