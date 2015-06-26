@@ -83,17 +83,19 @@ class SquidStore extends EventEmitter {
       if (!exists && !this.registered) {
         const now = Date.now();
         const data = {
-          twitterId:    post.twitterId,
+          avatarUrl:    post.avatarUrl,
+          colorNumber:  post.colorNumber,
           ikaId:        post.ikaId,
           siomeAuthId:  post.siomeAuthId,
+          twitterId:    post.twitterId,
           dateAdded:    now,
           dateModified: now
         };
+        this.ref.off('value', onValueDisposer);
         this.ref.push(data);
       }
 
       this.registered = true;
-      this.ref.off('value', onValueDisposer);
       this.emit(CHANGE);
     });
   }
