@@ -7,7 +7,8 @@ const CHANGE = 'CHANGE';
 class SquidStore extends EventEmitter {
   constructor(dispatcher) {
     super();
-    this.ref = new Firebase(`${firebaseUrl}/squid`);
+    this.ref = new Firebase(`${firebaseUrl}/squid`)
+      .orderByChild('order');
 
     /* eslint-disable no-multi-spaces */
     dispatcher.on('applicationReady', this.onApplicationReady.bind(this));
@@ -40,7 +41,6 @@ class SquidStore extends EventEmitter {
    */
   onLoad(siomeAuthId) {
     this.ref
-      .orderByChild('siomeAuthId')
       .on('child_added', (snapshot) => {
         if (snapshot.val().siomeAuthId === siomeAuthId) {
           this.registered = true;
