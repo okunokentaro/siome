@@ -4,9 +4,11 @@ import {appName} from '../constants';
 
 // Flux
 import EventEmitter from '../vendor/mini-flux/EventEmitter';
-const AppAction = Injector.AppAction();
-import SquidStore from '../squid-store';
-const AuthStore = Injector.AuthStore();
+
+const AppAction = Injector.appAction();
+const SquidStore = Injector.squidStore();
+const AuthStore = Injector.authStore();
+
 const dispatcher = new EventEmitter();
 export const action = new AppAction(dispatcher);
 const squidStore = new SquidStore(dispatcher);
@@ -24,14 +26,6 @@ export class IkaAppController {
     squidStore.on('CHANGE', this.onSquidStoreChange.bind(this));
     authStore .on('CHANGE', this.onAuthStoreChange .bind(this));
 
-    this.init();
-  }
-
-  /**
-   * @private
-   * @returns {void}
-   */
-  init() {
     action.applicationReady();
     action.initAuthStatus();
   }
@@ -45,14 +39,14 @@ export class IkaAppController {
     this.registered = squidStore.registered;
 
     this.colorNumber = 0;
-    if (squidStore.selfData) {
-      this.ikaId = squidStore.selfData.ikaId;
-      this.colorNumber = squidStore.colorNumber !== void 0 && squidStore.colorNumber !== null
-        ? squidStore.colorNumber
-        : squidStore.selfData.colorNumber;
-    }
-  }
+    this.setSelfData(squidStore);
 
+    if (!squidStore.selfData) { return; }
+    this.ikaId = squidStore.selfData.ikaId;
+    this.colorNumber = squidStore.colorNumber !== void 0 && squidStore.colorNumber !== null
+      ? squidStore.colorNumber
+      : squidStore.selfData.colorNumber;
+  }
   /**
    * @private
    * @returns {void}
