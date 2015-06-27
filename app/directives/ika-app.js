@@ -1,11 +1,12 @@
-import angular from 'angular';
+import Injector from '../injector';
+const angular = Injector.angular();
 import {appName} from '../constants';
 
 // Flux
 import EventEmitter from '../vendor/mini-flux/EventEmitter';
-import AppAction from '../app-action';
+const AppAction = Injector.AppAction();
 import SquidStore from '../squid-store';
-import AuthStore from '../auth-store';
+const AuthStore = Injector.AuthStore();
 const dispatcher = new EventEmitter();
 export const action = new AppAction(dispatcher);
 const squidStore = new SquidStore(dispatcher);
@@ -14,7 +15,7 @@ const authStore = new AuthStore(dispatcher);
 // Constants
 const directiveName = 'ikaApp';
 
-class IkaAppController {
+export class IkaAppController {
   constructor($rootScope, $firebaseArray) {
     IkaAppController.$inject = ['$rootScope', '$firebaseArray'];
     this.$rootScope = $rootScope;
