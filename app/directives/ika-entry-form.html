@@ -13,7 +13,6 @@
     <button ng-if="!ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.save()">save</button>
     <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.update()">update</button>
     <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.remove()">remove</button>
-    <p ng-show="0 < ikaEntryForm.remaining">ちょっと待ってね</p>
-    <p ng-show="!ikaEntryForm.remaining">&nbsp;</p>
+    <p class="form-info" ng-class="'form-'+[ikaEntryForm.formInfo.type]">{{ikaEntryForm.formInfo.message}}</p>
   </form>
 </div>

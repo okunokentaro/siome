@@ -10,6 +10,10 @@ class IkaEntryFormController {
     this.$rootScope = $rootScope;
     this.postable = true;
     this.post = this.post || {};
+    this.formInfo = {
+      type:    'info',
+      message: ''
+    };
 
     this.watch();
   }
@@ -42,6 +46,11 @@ class IkaEntryFormController {
    * @returns {void}
    */
   save() {
+    if (!this.post.ikaId || this.post.ikaId === '') {
+      this.formInfo = {type: 'error', message: '何も入力されてない'};
+      return;
+    }
+
     this.resetPostable(Date, window, this.$rootScope);
 
     console.log(this.authStatus.twitter.cachedUserProfile.profile_image_url_https);
@@ -91,9 +100,13 @@ class IkaEntryFormController {
     }, waitTime);
 
     this.remaining = waitTime / 1000;
+    this.formInfo = {type: 'info', message: 'ちょっと待ってね'};
     const timer = window.setInterval(() => {
       this.remaining--;
-      if (this.remaining === 0) { window.clearInterval(timer); }
+      if (this.remaining === 0) {
+        window.clearInterval(timer);
+        this.formInfo.message = '';
+      }
       this.$rootScope.$apply();
     }, 1000);
   }
