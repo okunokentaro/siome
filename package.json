@@ -26,7 +26,7 @@
     "watchify": "^3.2.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers js:espower-babel/guess ./test/**/*-test.js",
     "build": "browserify -e ./app/index.js -o ./bundle.js -t babelify",
     "watch": "gulp watch"
   },
