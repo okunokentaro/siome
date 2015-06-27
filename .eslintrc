@@ -9,6 +9,8 @@
     "document": true,
     "describe": true,
     "context": true,
+    "beforeEach": true,
+    "afterEach": true,
     "it": true
   },
   "rules": {
