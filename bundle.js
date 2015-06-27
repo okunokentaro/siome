@@ -372,7 +372,7 @@ var IkaAppController = (function () {
      * @returns {void}
      */
     value: function onSquidStoreChange() {
-      this.hordeOfSquid = this.$firebaseArray(squidStore.ref);
+      this.hordeOfSquid = this.$firebaseArray(squidStore.ref.orderByChild('order'));
       this.registered = squidStore.registered;
 
       this.colorNumber = 0;
@@ -816,7 +816,7 @@ var SquidStore = (function (_EventEmitter) {
     _classCallCheck(this, SquidStore);
 
     _get(Object.getPrototypeOf(SquidStore.prototype), 'constructor', this).call(this);
-    this.ref = new _firebase2['default'](_constants.firebaseUrl + '/squid').orderByChild('order');
+    this.ref = new _firebase2['default'](_constants.firebaseUrl + '/squid');
 
     /* eslint-disable no-multi-spaces */
     dispatcher.on('applicationReady', this.onApplicationReady.bind(this));
@@ -857,7 +857,7 @@ var SquidStore = (function (_EventEmitter) {
     value: function onLoad(siomeAuthId) {
       var _this = this;
 
-      this.ref.on('child_added', function (snapshot) {
+      this.ref.orderByChild('siomeAuthId').on('child_added', function (snapshot) {
         if (snapshot.val().siomeAuthId === siomeAuthId) {
           _this.registered = true;
           _this.selfData = {

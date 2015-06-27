@@ -32,7 +32,7 @@ class IkaAppController {
    * @returns {void}
    */
   onSquidStoreChange() {
-    this.hordeOfSquid = this.$firebaseArray(squidStore.ref);
+    this.hordeOfSquid = this.$firebaseArray(squidStore.ref.orderByChild('order'));
     this.registered = squidStore.registered;
 
     this.colorNumber = 0;
