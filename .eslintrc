@@ -6,7 +6,10 @@
   },
   "globals": {
     "window": true,
-    "document": true
+    "document": true,
+    "describe": true,
+    "context": true,
+    "it": true
   },
   "rules": {
     "no-reserved-keys": 2,
