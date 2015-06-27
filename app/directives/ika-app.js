@@ -23,6 +23,14 @@ class IkaAppController {
     squidStore.on('CHANGE', this.onSquidStoreChange.bind(this));
     authStore .on('CHANGE', this.onAuthStoreChange .bind(this));
 
+    this.init();
+  }
+
+  /**
+   * @private
+   * @returns {void}
+   */
+  init() {
     action.applicationReady();
     action.initAuthStatus();
   }
