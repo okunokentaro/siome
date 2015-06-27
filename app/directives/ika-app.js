@@ -18,9 +18,8 @@ const authStore = new AuthStore(dispatcher);
 const directiveName = 'ikaApp';
 
 export class IkaAppController {
-  constructor($rootScope, $firebaseArray) {
-    IkaAppController.$inject = ['$rootScope', '$firebaseArray'];
-    this.$rootScope = $rootScope;
+  constructor($firebaseArray) {
+    IkaAppController.$inject = ['$firebaseArray'];
     this.$firebaseArray = $firebaseArray;
 
     squidStore.on('CHANGE', this.onSquidStoreChange.bind(this));
