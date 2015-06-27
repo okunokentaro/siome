@@ -8,8 +8,8 @@ moment.locale('ja');
 const directiveName = 'ikaBalloon';
 
 class IkaBalloonController {
-  constructor($rootScope, $compile, $scope) {
-    IkaBalloonController.$inject = ['$rootScope', '$compile', '$scope'];
+  constructor($scope) {
+    IkaBalloonController.$inject = ['$scope'];
     this.$scope = $scope;
 
     // Aliases
