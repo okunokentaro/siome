@@ -26,8 +26,8 @@ ika-header h1 {
   margin: 0;
 }
 ika-header p {
-  padding-top: 1.5rem;
-  padding-bottom: 3.0rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
   margin: 0;
   font-size: 2rem;
   font-weight: bold;
@@ -35,10 +35,84 @@ ika-header p {
 ika-entry-form {
   display: block;
   background: linear-gradient(#ffffff, rgba(255, 255, 255, 0));
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
 }
 ika-entry-form .login-info {
   padding: 1.4rem 0 2rem;
+}
+ika-entry-form .form-info {
+  margin: 1.5rem 0 1rem;
+  height: 1em;
+  line-height: 1em;
+}
+ika-entry-form .form-info.error {
+  font-weight: bold;
+}
+ika-entry-form .error.kumano {
+  color: #e86b4e;
+}
+ika-entry-form .error.anemo {
+  color: #cb40cc;
+}
+ika-entry-form .error.judgekun {
+  color: #3d3c2e;
+}
+ika-entry-form label[for="ikaId"] {
+  position: relative;
+  top: -1px;
+  width: 80px;
+  margin-right: 1rem;
+}
+ika-entry-form label[for="ikaId"] img {
+  width: 100%;
+}
+ika-entry-form input {
+  text-align: left;
+  border: 2px solid #333;
+  border-radius: 4px;
+  padding: .5rem 1rem;
+  width: 17em;
+  font-size: 1.8rem;
+}
+ika-entry-form .error input {
+  border: 2px solid #e86b4e;
+}
+ika-entry-form .posting {
+  height: 3em;
+  margin-left: 1rem;
+  -webkit-appearance: none;
+  border-radius: 8px;
+  transition: border 0.3s ease, background-color 0.3s ease;
+}
+ika-entry-form .posting img {
+  position: relative;
+  height: 2em;
+}
+ika-entry-form .posting.save {
+  background: #00aeef;
+  border: 2px solid #006489;
+}
+ika-entry-form .posting.save p {
+  margin-top: 1.2rem;
+  font-size: 1.2rem;
+}
+ika-entry-form .posting.save img {
+  top: 2px;
+}
+ika-entry-form .posting.update {
+  background: #fff;
+  border: 2px solid #2341a4;
+}
+ika-entry-form .posting.remove {
+  background: #fff;
+  border: 2px solid #e86b4e;
+}
+ika-entry-form .posting[disabled="disabled"] {
+  transition: opacity .3s ease;
+  opacity: .2;
+}
+ika-entry-form .error .posting p {
+  display: none;
 }
 ika-palette {
   -webkit-user-select: none;
@@ -319,4 +393,8 @@ ika-balloon .color-6 .relative-time {
   background: #ffe8f0;
   color: #b71d2d;
   border: 2px solid #b71d2d;
+}
+#ika-footer {
+  margin-top: 100px;
+  margin-bottom: 2rem;
 }

@@ -137,7 +137,7 @@ appConfig.$inject = ['$routeProvider'];
 
 _angular2['default'].module(_constants.appName).config(appConfig);
 
-},{"./constants":4,"angular":16,"angular-route":14,"angularfire":18,"firebase":19}],3:[function(require,module,exports){
+},{"./constants":4,"angular":17,"angular-route":15,"angularfire":19,"firebase":20}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -266,7 +266,7 @@ var AuthStore = (function (_EventEmitter) {
 exports['default'] = AuthStore;
 module.exports = exports['default'];
 
-},{"./constants":4,"./vendor/mini-flux/EventEmitter":12,"angular":16,"firebase":19}],4:[function(require,module,exports){
+},{"./constants":4,"./vendor/mini-flux/EventEmitter":13,"angular":17,"firebase":20}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -280,58 +280,19 @@ var firebaseUrl = 'https://siome.firebaseio.com/';
 exports.firebaseUrl = firebaseUrl;
 
 },{}],5:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-  value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-exports.createFirebaseArray = createFirebaseArray;
-exports.extractIkaId = extractIkaId;
-exports.extractColorNumber = extractColorNumber;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var _angular = require('angular');
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _constants = require('../constants');
-
-// Flux
-
-var _vendorMiniFluxEventEmitter = require('../vendor/mini-flux/EventEmitter');
-
-var _vendorMiniFluxEventEmitter2 = _interopRequireDefault(_vendorMiniFluxEventEmitter);
-
-var _appAction = require('../app-action');
-
-var _appAction2 = _interopRequireDefault(_appAction);
-
-var _squidStore = require('../squid-store');
-
-var _squidStore2 = _interopRequireDefault(_squidStore);
-
-var AuthStore = require('../auth-store');
-
-var dispatcher = new _vendorMiniFluxEventEmitter2['default']();
-var action = new _appAction2['default'](dispatcher);
-exports.action = action;
-var authStore = new AuthStore(dispatcher);
-var squidStore = new _squidStore2['default'](dispatcher);
-
-// Constants
-var directiveName = 'ikaApp';
-
 /**
  * @param {IAngularStatic} ng - angular
  * @param {Firebase} ref
  * @return {AngularFireArray}
  */
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+exports.createFirebaseArray = createFirebaseArray;
+exports.extractIkaId = extractIkaId;
+exports.extractColorNumber = extractColorNumber;
 
 function createFirebaseArray(ng, ref) {
   var $firebaseArray = ng.element(document.querySelector('.ng-scope')).injector().get('$firebaseArray');
@@ -366,6 +327,52 @@ function extractColorNumber(store) {
   return store.selfData.colorNumber;
 }
 
+},{}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, '__esModule', {
+  value: true
+});
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _angular = require('angular');
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _constants = require('../constants');
+
+// Flux
+
+var _vendorMiniFluxEventEmitter = require('../vendor/mini-flux/EventEmitter');
+
+var _vendorMiniFluxEventEmitter2 = _interopRequireDefault(_vendorMiniFluxEventEmitter);
+
+var _appAction = require('../app-action');
+
+var _appAction2 = _interopRequireDefault(_appAction);
+
+var _squidStore = require('../squid-store');
+
+var _squidStore2 = _interopRequireDefault(_squidStore);
+
+var _ikaAppFunc = require('./ika-app-func');
+
+var AuthStore = require('../auth-store');
+
+var dispatcher = new _vendorMiniFluxEventEmitter2['default']();
+var action = new _appAction2['default'](dispatcher);
+exports.action = action;
+var authStore = new AuthStore(dispatcher);
+var squidStore = new _squidStore2['default'](dispatcher);
+
+// Constants
+var directiveName = 'ikaApp';
+
 var IkaAppController = (function () {
   function IkaAppController() {
     _classCallCheck(this, IkaAppController);
@@ -385,9 +392,9 @@ var IkaAppController = (function () {
      * @returns {void}
      */
     value: function onSquidStoreChange() {
-      this.colorNumber = extractColorNumber(squidStore);
-      this.hordeOfSquid = createFirebaseArray(_angular2['default'], squidStore.ref);
-      this.ikaId = extractIkaId(squidStore.selfData);
+      this.colorNumber = (0, _ikaAppFunc.extractColorNumber)(squidStore);
+      this.hordeOfSquid = (0, _ikaAppFunc.createFirebaseArray)(_angular2['default'], squidStore.ref);
+      this.ikaId = (0, _ikaAppFunc.extractIkaId)(squidStore.selfData);
       this.registered = squidStore.registered;
     }
   }, {
@@ -423,7 +430,7 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../app-action":1,"../auth-store":3,"../constants":4,"../squid-store":11,"../vendor/mini-flux/EventEmitter":12,"angular":16}],6:[function(require,module,exports){
+},{"../app-action":1,"../auth-store":3,"../constants":4,"../squid-store":12,"../vendor/mini-flux/EventEmitter":13,"./ika-app-func":5,"angular":17}],7:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -529,7 +536,7 @@ function ikaIkaid() {
 
 _angular2['default'].module(_constants.appName).directive('ikaIkaid', ikaIkaid);
 
-},{"../constants":4,"angular":16,"moment":21,"moment/locale/ja":20}],7:[function(require,module,exports){
+},{"../constants":4,"angular":17,"moment":22,"moment/locale/ja":21}],8:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -558,7 +565,7 @@ var IkaEntryFormController = (function () {
     this.post = this.post || {};
     this.formInfo = {
       type: 'info',
-      message: ''
+      message: '登録時に自動で呟くことはありません'
     };
 
     this.watch();
@@ -599,14 +606,43 @@ var IkaEntryFormController = (function () {
       _ikaApp.action.logout();
     }
   }, {
+    key: 'isValidIkaId',
+
+    /**
+     * @param {string} ikaId
+     * @returns {boolean}
+     */
+    value: function isValidIkaId(ikaId) {
+      if (!ikaId || ikaId === '') {
+        this.formInfo = { type: 'error', character: 'kumano', message: 'クマノ「何も入力されてねぇぞ！！」' };
+        return false;
+      }
+
+      if (ikaId.length < 6) {
+        this.formInfo = { type: 'error', character: 'anemo', message: 'アネモ「…ぁっ、6文字以上で　おねがいします…」' };
+        return false;
+      }
+
+      if (16 < ikaId.length) {
+        this.formInfo = { type: 'error', character: 'kumano', message: 'クマノ「16文字超えてっぞ！」' };
+        return false;
+      }
+
+      if (!/^[a-zA-Z0-9._\-]{6,16}$/.test(ikaId)) {
+        this.formInfo = { type: 'error', character: 'judgekun', message: 'に"！（使えるのは半角英数と._-の記号だけだ！）' };
+        return false;
+      }
+
+      return true;
+    }
+  }, {
     key: 'save',
 
     /**
      * @returns {void}
      */
     value: function save() {
-      if (!this.post.ikaId || this.post.ikaId === '') {
-        this.formInfo = { type: 'error', message: '何も入力されてない' };
+      if (!this.isValidIkaId(this.post.ikaId)) {
         return;
       }
 
@@ -627,8 +663,13 @@ var IkaEntryFormController = (function () {
      */
     value: function update() {
       if (!this.authStatus) {
-        return console.error('Cannot update because you have not logged in');
+        console.error('Cannot update because you have not logged in');
+        return;
       }
+      if (!this.isValidIkaId(this.post.ikaId)) {
+        return;
+      }
+
       this.resetPostable(Date, window, this.$rootScope);
 
       this.post.colorNumber = this.colorNumber;
@@ -648,6 +689,11 @@ var IkaEntryFormController = (function () {
         return console.error('Cannot remove because you have not logged in');
       }
       _ikaApp.action.removeSquid(this.authStatus.uid);
+
+      this.formInfo = {
+        type: 'info',
+        message: '登録時に自動で呟くことはありません'
+      };
     }
   }, {
     key: 'resetPostable',
@@ -670,7 +716,7 @@ var IkaEntryFormController = (function () {
       }, waitTime);
 
       this.remaining = waitTime / 1000;
-      this.formInfo = { type: 'info', message: 'ちょっと待ってね' };
+      this.formInfo = { type: 'info', character: '', message: 'ちょっと待ってね' };
       var timer = window.setInterval(function () {
         _this2.remaining--;
         if (_this2.remaining === 0) {
@@ -704,7 +750,7 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../constants":4,"./ika-app":5,"angular":16}],8:[function(require,module,exports){
+},{"../constants":4,"./ika-app":6,"angular":17}],9:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -727,7 +773,7 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../constants":4,"angular":16}],9:[function(require,module,exports){
+},{"../constants":4,"angular":17}],10:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -783,7 +829,7 @@ _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
 // noop
 
-},{"../constants":4,"./ika-app":5,"angular":16}],10:[function(require,module,exports){
+},{"../constants":4,"./ika-app":6,"angular":17}],11:[function(require,module,exports){
 'use strict';
 
 require('./app');
@@ -798,7 +844,7 @@ require('./directives/ika-palette');
 
 require('./directives/ika-balloon');
 
-},{"./app":2,"./directives/ika-app":5,"./directives/ika-balloon":6,"./directives/ika-entry-form":7,"./directives/ika-header":8,"./directives/ika-palette":9}],11:[function(require,module,exports){
+},{"./app":2,"./directives/ika-app":6,"./directives/ika-balloon":7,"./directives/ika-entry-form":8,"./directives/ika-header":9,"./directives/ika-palette":10}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -980,7 +1026,7 @@ var SquidStore = (function (_EventEmitter) {
 exports['default'] = SquidStore;
 module.exports = exports['default'];
 
-},{"./constants":4,"./vendor/mini-flux/EventEmitter":12,"firebase":19}],12:[function(require,module,exports){
+},{"./constants":4,"./vendor/mini-flux/EventEmitter":13,"firebase":20}],13:[function(require,module,exports){
 // https://github.com/azu/mini-flux/blob/master/src/EventEmitter.js
 // LICENSE : MIT
 "use strict";
@@ -1040,7 +1086,7 @@ var EventEmitter = (function () {
 exports["default"] = EventEmitter;
 module.exports = exports["default"];
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.1
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -2033,11 +2079,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":13}],15:[function(require,module,exports){
+},{"./angular-route":14}],16:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.1
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -30332,11 +30378,11 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":15}],17:[function(require,module,exports){
+},{"./angular":16}],18:[function(require,module,exports){
 /*!
  * AngularFire is the officially supported AngularJS binding for Firebase. Firebase
  * is a full backend so you don't need servers to build your Angular app. AngularFire
@@ -32612,11 +32658,11 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     }
 })();
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 require('./dist/angularfire');
 module.exports = 'firebase';
 
-},{"./dist/angularfire":17}],19:[function(require,module,exports){
+},{"./dist/angularfire":18}],20:[function(require,module,exports){
 /*! @license Firebase v2.2.7
     License: https://www.firebase.com/terms/terms-of-service.html */
 (function() {var h,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.ub=function(){return a.tf?a.tf:a.tf=new a}}
@@ -32882,7 +32928,7 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
 
 module.exports = Firebase;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 //! moment.js locale configuration
 //! locale : japanese (ja)
 //! author : LI Long : https://github.com/baryon
@@ -32947,7 +32993,7 @@ module.exports = Firebase;
     return ja;
 
 }));
-},{"../moment":21}],21:[function(require,module,exports){
+},{"../moment":22}],22:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -36059,4 +36105,4 @@ module.exports = Firebase;
     return _moment;
 
 }));
-},{}]},{},[10]);
+},{}]},{},[11]);
