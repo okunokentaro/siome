@@ -69,7 +69,7 @@ angular.module(appName).directive('ikaTwi', ikaTwi);
 function ikaIkaid() {
   return {
     restrict: 'E',
-    template: '<span class="ika-id-label">イカID:</span><span class="ika-id">{{id}}</span>',
+    template: '<span class="ika-id-label">イカID:&nbsp;</span><span class="ika-id">{{id}}</span>',
     scope:    {
       id: '=iId'
     }
