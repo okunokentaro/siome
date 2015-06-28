@@ -34,7 +34,7 @@ class IkaAppController {
   onSquidStoreChange() {
     this.colorNumber = extractColorNumber(squidStore);
     this.hordeOfSquid = createFirebaseArray(angular, squidStore.ref);
-    this.ikaId = extractIkaId(squidStore.selfData);
+    this.ikaId = extractIkaId(squidStore);
     this.registered = squidStore.registered;
   }
   /**
