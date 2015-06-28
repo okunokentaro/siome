@@ -76,21 +76,21 @@ var AppAction = (function () {
     key: 'removeSquid',
 
     /**
-     * @param {string} siomeAuthId
+     * @param {string} siomeUid
      * @returns {void}
      */
-    value: function removeSquid(siomeAuthId) {
-      this.dispatcher.emit('removeSquid', siomeAuthId);
+    value: function removeSquid(siomeUid) {
+      this.dispatcher.emit('removeSquid', siomeUid);
     }
   }, {
     key: 'load',
 
     /**
-     * @param {string} siomeAuthId
+     * @param {string} siomeUid
      * @returns {void}
      */
-    value: function load(siomeAuthId) {
-      this.dispatcher.emit('load', siomeAuthId);
+    value: function load(siomeUid) {
+      this.dispatcher.emit('load', siomeUid);
     }
   }, {
     key: 'setColor',
@@ -137,7 +137,7 @@ appConfig.$inject = ['$routeProvider'];
 
 _angular2['default'].module(_constants.appName).config(appConfig);
 
-},{"./constants":5,"angular":17,"angular-route":15,"angularfire":19,"firebase":20}],3:[function(require,module,exports){
+},{"./constants":4,"angular":16,"angular-route":14,"angularfire":18,"firebase":19}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -266,31 +266,7 @@ var AuthStore = (function (_EventEmitter) {
 exports['default'] = AuthStore;
 module.exports = exports['default'];
 
-},{"./constants":5,"./vendor/mini-flux/EventEmitter":13,"angular":17,"firebase":20}],4:[function(require,module,exports){
-'use strict';
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-var _angular = require('angular');
-
-var _angular2 = _interopRequireDefault(_angular);
-
-var _firebase = require('firebase');
-
-var _firebase2 = _interopRequireDefault(_firebase);
-
-var _constants = require('./constants');
-
-function authFactory($firebaseAuth) {
-  var ref = new _firebase2['default'](_constants.firebaseUrl);
-  return $firebaseAuth(ref);
-}
-
-authFactory.$inject = ['$firebaseAuth'];
-
-_angular2['default'].module(_constants.appName).factory('Auth', authFactory);
-
-},{"./constants":5,"angular":17,"firebase":20}],5:[function(require,module,exports){
+},{"./constants":4,"./vendor/mini-flux/EventEmitter":12,"angular":16,"firebase":19}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -303,7 +279,7 @@ exports.plugins = plugins;
 var firebaseUrl = 'https://siome.firebaseio.com/';
 exports.firebaseUrl = firebaseUrl;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -311,6 +287,10 @@ Object.defineProperty(exports, '__esModule', {
 });
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+exports.createFirebaseArray = createFirebaseArray;
+exports.extractIkaId = extractIkaId;
+exports.extractColorNumber = extractColorNumber;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -336,26 +316,59 @@ var _squidStore = require('../squid-store');
 
 var _squidStore2 = _interopRequireDefault(_squidStore);
 
-var _authStore = require('../auth-store');
-
-var _authStore2 = _interopRequireDefault(_authStore);
+var AuthStore = require('../auth-store');
 
 var dispatcher = new _vendorMiniFluxEventEmitter2['default']();
 var action = new _appAction2['default'](dispatcher);
 exports.action = action;
+var authStore = new AuthStore(dispatcher);
 var squidStore = new _squidStore2['default'](dispatcher);
-var authStore = new _authStore2['default'](dispatcher);
 
 // Constants
 var directiveName = 'ikaApp';
 
-var IkaAppController = (function () {
-  function IkaAppController($rootScope, $firebaseArray) {
-    _classCallCheck(this, IkaAppController);
+/**
+ * @param {IAngularStatic} ng - angular
+ * @param {Firebase} ref
+ * @return {AngularFireArray}
+ */
 
-    IkaAppController.$inject = ['$rootScope', '$firebaseArray'];
-    this.$rootScope = $rootScope;
-    this.$firebaseArray = $firebaseArray;
+function createFirebaseArray(ng, ref) {
+  var $firebaseArray = ng.element(document.querySelector('.ng-scope')).injector().get('$firebaseArray');
+  return $firebaseArray(ref.orderByChild('order'));
+}
+
+/**
+ * @param {SquidStore} store
+ * @returns {string}
+ */
+
+function extractIkaId(store) {
+  if (!store || !store.selfData || !store.selfData.ikaId) {
+    return '';
+  }
+  return store.selfData.ikaId;
+}
+
+/**
+ * @param {SquidStore} store
+ * @returns {number}
+ */
+
+function extractColorNumber(store) {
+  if (!store || !store.selfData) {
+    return 0;
+  }
+  if (store.colorNumber !== void 0 && store.colorNumber !== null) {
+    return store.colorNumber;
+  }
+
+  return store.selfData.colorNumber;
+}
+
+var IkaAppController = (function () {
+  function IkaAppController() {
+    _classCallCheck(this, IkaAppController);
 
     squidStore.on('CHANGE', this.onSquidStoreChange.bind(this));
     authStore.on('CHANGE', this.onAuthStoreChange.bind(this));
@@ -372,14 +385,10 @@ var IkaAppController = (function () {
      * @returns {void}
      */
     value: function onSquidStoreChange() {
-      this.hordeOfSquid = this.$firebaseArray(squidStore.ref.orderByChild('order'));
+      this.colorNumber = extractColorNumber(squidStore);
+      this.hordeOfSquid = createFirebaseArray(_angular2['default'], squidStore.ref);
+      this.ikaId = extractIkaId(squidStore.selfData);
       this.registered = squidStore.registered;
-
-      this.colorNumber = 0;
-      if (squidStore.selfData) {
-        this.ikaId = squidStore.selfData.ikaId;
-        this.colorNumber = squidStore.colorNumber !== void 0 && squidStore.colorNumber !== null ? squidStore.colorNumber : squidStore.selfData.colorNumber;
-      }
     }
   }, {
     key: 'onAuthStoreChange',
@@ -414,7 +423,7 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../app-action":1,"../auth-store":3,"../constants":5,"../squid-store":12,"../vendor/mini-flux/EventEmitter":13,"angular":17}],7:[function(require,module,exports){
+},{"../app-action":1,"../auth-store":3,"../constants":4,"../squid-store":11,"../vendor/mini-flux/EventEmitter":12,"angular":16}],6:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -440,10 +449,10 @@ _moment2['default'].locale('ja');
 var directiveName = 'ikaBalloon';
 
 var IkaBalloonController = (function () {
-  function IkaBalloonController($rootScope, $compile, $scope) {
+  function IkaBalloonController($scope) {
     _classCallCheck(this, IkaBalloonController);
 
-    IkaBalloonController.$inject = ['$rootScope', '$compile', '$scope'];
+    IkaBalloonController.$inject = ['$scope'];
     this.$scope = $scope;
 
     // Aliases
@@ -520,7 +529,7 @@ function ikaIkaid() {
 
 _angular2['default'].module(_constants.appName).directive('ikaIkaid', ikaIkaid);
 
-},{"../constants":5,"angular":17,"moment":22,"moment/locale/ja":21}],8:[function(require,module,exports){
+},{"../constants":4,"angular":16,"moment":21,"moment/locale/ja":20}],7:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -547,6 +556,10 @@ var IkaEntryFormController = (function () {
     this.$rootScope = $rootScope;
     this.postable = true;
     this.post = this.post || {};
+    this.formInfo = {
+      type: 'info',
+      message: ''
+    };
 
     this.watch();
   }
@@ -592,13 +605,17 @@ var IkaEntryFormController = (function () {
      * @returns {void}
      */
     value: function save() {
+      if (!this.post.ikaId || this.post.ikaId === '') {
+        this.formInfo = { type: 'error', message: '何も入力されてない' };
+        return;
+      }
+
       this.resetPostable(Date, window, this.$rootScope);
 
-      console.log(this.authStatus.twitter.cachedUserProfile.profile_image_url_https);
       this.post.avatarUrl = this.authStatus.twitter.cachedUserProfile.profile_image_url_https;
       this.post.colorNumber = this.colorNumber || 0;
       this.post.twitterId = this.authStatus.twitter.username;
-      this.post.siomeAuthId = this.authStatus.uid;
+      this.post.siomeUid = this.authStatus.uid;
 
       _ikaApp.action.addSquid(this.post);
     }
@@ -615,7 +632,7 @@ var IkaEntryFormController = (function () {
       this.resetPostable(Date, window, this.$rootScope);
 
       this.post.colorNumber = this.colorNumber;
-      this.post.siomeAuthId = this.authStatus.uid;
+      this.post.siomeUid = this.authStatus.uid;
       this.post.twitterId = this.authStatus.twitter.username;
 
       _ikaApp.action.updateSquid(this.post);
@@ -653,10 +670,12 @@ var IkaEntryFormController = (function () {
       }, waitTime);
 
       this.remaining = waitTime / 1000;
+      this.formInfo = { type: 'info', message: 'ちょっと待ってね' };
       var timer = window.setInterval(function () {
         _this2.remaining--;
         if (_this2.remaining === 0) {
           window.clearInterval(timer);
+          _this2.formInfo.message = '';
         }
         _this2.$rootScope.$apply();
       }, 1000);
@@ -685,7 +704,7 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../constants":5,"./ika-app":6,"angular":17}],9:[function(require,module,exports){
+},{"../constants":4,"./ika-app":5,"angular":16}],8:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -708,7 +727,7 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../constants":5,"angular":17}],10:[function(require,module,exports){
+},{"../constants":4,"angular":16}],9:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -728,11 +747,8 @@ var _ikaApp = require('./ika-app');
 var directiveName = 'ikaPalette';
 
 var IkaPaletteController = (function () {
-  function IkaPaletteController($rootScope) {
+  function IkaPaletteController() {
     _classCallCheck(this, IkaPaletteController);
-
-    IkaPaletteController.$inject = ['$rootScope'];
-    this.$rootScope = $rootScope;
   }
 
   _createClass(IkaPaletteController, [{
@@ -765,12 +781,12 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../constants":5,"./ika-app":6,"angular":17}],11:[function(require,module,exports){
+// noop
+
+},{"../constants":4,"./ika-app":5,"angular":16}],10:[function(require,module,exports){
 'use strict';
 
 require('./app');
-
-require('./auth');
 
 require('./directives/ika-app');
 
@@ -782,7 +798,7 @@ require('./directives/ika-palette');
 
 require('./directives/ika-balloon');
 
-},{"./app":2,"./auth":4,"./directives/ika-app":6,"./directives/ika-balloon":7,"./directives/ika-entry-form":8,"./directives/ika-header":9,"./directives/ika-palette":10}],12:[function(require,module,exports){
+},{"./app":2,"./directives/ika-app":5,"./directives/ika-balloon":6,"./directives/ika-entry-form":7,"./directives/ika-header":8,"./directives/ika-palette":9}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -816,7 +832,7 @@ var SquidStore = (function (_EventEmitter) {
     _classCallCheck(this, SquidStore);
 
     _get(Object.getPrototypeOf(SquidStore.prototype), 'constructor', this).call(this);
-    this.ref = new _firebase2['default'](_constants.firebaseUrl + '/squid');
+    this.ref = new _firebase2['default'](_constants.firebaseUrl + '/squids');
 
     /* eslint-disable no-multi-spaces */
     dispatcher.on('applicationReady', this.onApplicationReady.bind(this));
@@ -903,14 +919,14 @@ var SquidStore = (function (_EventEmitter) {
             avatarUrl: post.avatarUrl,
             colorNumber: post.colorNumber,
             ikaId: post.ikaId,
-            siomeAuthId: post.siomeAuthId,
+            uid: post.siomeAuthId,
             twitterId: post.twitterId,
             dateAdded: now,
             dateModified: now,
             order: now * -1 // reverse sort order
           };
           _this2.ref.off('value', onValueDisposer);
-          _this2.ref.push(data);
+          _this2.ref.child(post.siomeAuthId).set(data);
         }
 
         _this2.registered = true;
@@ -971,7 +987,7 @@ var SquidStore = (function (_EventEmitter) {
 exports['default'] = SquidStore;
 module.exports = exports['default'];
 
-},{"./constants":5,"./vendor/mini-flux/EventEmitter":13,"firebase":20}],13:[function(require,module,exports){
+},{"./constants":4,"./vendor/mini-flux/EventEmitter":12,"firebase":19}],12:[function(require,module,exports){
 // https://github.com/azu/mini-flux/blob/master/src/EventEmitter.js
 // LICENSE : MIT
 "use strict";
@@ -1031,7 +1047,7 @@ var EventEmitter = (function () {
 exports["default"] = EventEmitter;
 module.exports = exports["default"];
 
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.1
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -2024,11 +2040,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":14}],16:[function(require,module,exports){
+},{"./angular-route":13}],15:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.1
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -30323,20 +30339,20 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":16}],18:[function(require,module,exports){
+},{"./angular":15}],17:[function(require,module,exports){
 /*!
  * AngularFire is the officially supported AngularJS binding for Firebase. Firebase
  * is a full backend so you don't need servers to build your Angular app. AngularFire
  * provides you with the $firebase service which allows you to easily keep your $scope
  * variables in sync with your Firebase backend.
  *
- * AngularFire 1.1.2
+ * AngularFire 1.1.1
  * https://github.com/firebase/angularfire/
- * Date: 06/25/2015
+ * Date: 05/05/2015
  * License: MIT
  */
 (function(exports) {
@@ -30398,8 +30414,8 @@ module.exports = angular;
    * var list = new ExtendedArray(ref);
    * </code></pre>
    */
-  angular.module('firebase').factory('$firebaseArray', ["$log", "$firebaseUtils", "$q",
-    function($log, $firebaseUtils, $q) {
+  angular.module('firebase').factory('$firebaseArray', ["$log", "$firebaseUtils",
+    function($log, $firebaseUtils) {
       /**
        * This constructor should probably never be called manually. It is used internally by
        * <code>$firebase.$asArray()</code>.
@@ -30982,14 +30998,16 @@ module.exports = angular;
 
         var def     = $firebaseUtils.defer();
         var created = function(snap, prevChild) {
-          waitForResolution(firebaseArray.$$added(snap, prevChild), function(rec) {
+          var rec = firebaseArray.$$added(snap, prevChild);
+          $firebaseUtils.whenUnwrapped(rec, function(rec) {
             firebaseArray.$$process('child_added', rec, prevChild);
           });
         };
         var updated = function(snap) {
           var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
           if( rec ) {
-            waitForResolution(firebaseArray.$$updated(snap), function() {
+            var res = firebaseArray.$$updated(snap);
+            $firebaseUtils.whenUnwrapped(res, function() {
               firebaseArray.$$process('child_changed', rec);
             });
           }
@@ -30997,7 +31015,8 @@ module.exports = angular;
         var moved   = function(snap, prevChild) {
           var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
           if( rec ) {
-            waitForResolution(firebaseArray.$$moved(snap, prevChild), function() {
+            var res = firebaseArray.$$moved(snap, prevChild);
+            $firebaseUtils.whenUnwrapped(res, function() {
               firebaseArray.$$process('child_moved', rec, prevChild);
             });
           }
@@ -31005,25 +31024,13 @@ module.exports = angular;
         var removed = function(snap) {
           var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
           if( rec ) {
-            waitForResolution(firebaseArray.$$removed(snap), function() {
-               firebaseArray.$$process('child_removed', rec);
+            var res = firebaseArray.$$removed(snap);
+            $firebaseUtils.whenUnwrapped(res, function() {
+              firebaseArray.$$process('child_removed', rec);
             });
           }
         };
 
-        function waitForResolution(maybePromise, callback) {
-          var promise = $q.when(maybePromise);
-          promise.then(function(result){
-            if (result) {
-              callback(result);
-            }
-          });
-          if (!isResolved) {
-            resolutionPromises.push(promise);
-          }
-        }
-
-        var resolutionPromises = [];
         var isResolved = false;
         var error   = $firebaseUtils.batch(function(err) {
           _initComplete(err);
@@ -31037,11 +31044,7 @@ module.exports = angular;
           destroy: destroy,
           isDestroyed: false,
           init: init,
-          ready: function() { return def.promise.then(function(result){
-            return $q.all(resolutionPromises).then(function(){
-              return result;
-            });
-          }); }
+          ready: function() { return def.promise; }
         };
 
         return sync;
@@ -32344,6 +32347,16 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
 
           resolve: $q.when,
 
+          whenUnwrapped: function(possiblePromise, callback) {
+            if( possiblePromise ) {
+              utils.resolve(possiblePromise).then(function(res) {
+                if( res ) {
+                  callback(res);
+                }
+              });
+            }
+          },
+
           //TODO: Remove false branch and use only angular implementation when we drop angular 1.2.x support.
           promise: angular.isFunction($q) ? $q : Q,
 
@@ -32585,7 +32598,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
           /**
            * AngularFire version number.
            */
-          VERSION: '1.1.2',
+          VERSION: '1.1.1',
 
           allPromises: $q.all.bind($q)
         };
@@ -32606,11 +32619,11 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     }
 })();
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 require('./dist/angularfire');
 module.exports = 'firebase';
 
-},{"./dist/angularfire":18}],20:[function(require,module,exports){
+},{"./dist/angularfire":17}],19:[function(require,module,exports){
 /*! @license Firebase v2.2.7
     License: https://www.firebase.com/terms/terms-of-service.html */
 (function() {var h,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.ub=function(){return a.tf?a.tf:a.tf=new a}}
@@ -32876,7 +32889,7 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
 
 module.exports = Firebase;
 
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 //! moment.js locale configuration
 //! locale : japanese (ja)
 //! author : LI Long : https://github.com/baryon
@@ -32941,7 +32954,7 @@ module.exports = Firebase;
     return ja;
 
 }));
-},{"../moment":22}],22:[function(require,module,exports){
+},{"../moment":21}],21:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -36053,4 +36066,4 @@ module.exports = Firebase;
     return _moment;
 
 }));
-},{}]},{},[11]);
+},{}]},{},[10]);

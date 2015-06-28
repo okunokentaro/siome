@@ -5,9 +5,8 @@ import {action} from './ika-app';
 const directiveName = 'ikaPalette';
 
 class IkaPaletteController {
-  constructor($rootScope) {
-    IkaPaletteController.$inject = ['$rootScope'];
-    this.$rootScope = $rootScope;
+  constructor() {
+    // noop
   }
 
   /**

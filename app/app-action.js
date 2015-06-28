@@ -38,16 +38,16 @@ export default class AppAction {
   updateSquid(data) { this.dispatcher.emit('updateSquid', data); }
 
   /**
-   * @param {string} siomeAuthId
+   * @param {string} siomeUid
    * @returns {void}
    */
-  removeSquid(siomeAuthId) { this.dispatcher.emit('removeSquid', siomeAuthId); }
+  removeSquid(siomeUid) { this.dispatcher.emit('removeSquid', siomeUid); }
 
   /**
-   * @param {string} siomeAuthId
+   * @param {string} siomeUid
    * @returns {void}
    */
-  load(siomeAuthId) { this.dispatcher.emit('load', siomeAuthId); }
+  load(siomeUid) { this.dispatcher.emit('load', siomeUid); }
 
   /**
    * @param {number} n

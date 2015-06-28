@@ -16,14 +16,19 @@
     "babelify": "^6.1.2",
     "browserify": "^10.2.4",
     "eslint": "^0.23.0",
+    "espower-babel": "^3.2.0",
     "gulp": "^3.9.0",
     "gulp-shell": "^0.4.2",
     "less": "^2.5.1",
+    "mocha": "^2.2.5",
+    "power-assert": "^0.11.0",
+    "proxyquire": "^1.5.0",
     "run-sequence": "^1.1.1",
+    "sinon": "^1.15.3",
     "watchify": "^3.2.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers js:espower-babel/guess ./test/**/*-test.js",
     "build": "browserify -e ./app/index.js -o ./bundle.js -t babelify",
     "watch": "gulp watch"
   },

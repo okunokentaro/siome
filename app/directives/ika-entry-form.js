@@ -53,11 +53,10 @@ class IkaEntryFormController {
 
     this.resetPostable(Date, window, this.$rootScope);
 
-    console.log(this.authStatus.twitter.cachedUserProfile.profile_image_url_https);
     this.post.avatarUrl = this.authStatus.twitter.cachedUserProfile.profile_image_url_https;
     this.post.colorNumber = this.colorNumber || 0;
     this.post.twitterId = this.authStatus.twitter.username;
-    this.post.siomeAuthId = this.authStatus.uid;
+    this.post.siomeUid = this.authStatus.uid;
 
     action.addSquid(this.post);
   }
@@ -70,7 +69,7 @@ class IkaEntryFormController {
     this.resetPostable(Date, window, this.$rootScope);
 
     this.post.colorNumber = this.colorNumber;
-    this.post.siomeAuthId = this.authStatus.uid;
+    this.post.siomeUid = this.authStatus.uid;
     this.post.twitterId = this.authStatus.twitter.username;
 
     action.updateSquid(this.post);

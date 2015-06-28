@@ -3,23 +3,60 @@ import {appName} from '../constants';
 
 // Flux
 import EventEmitter from '../vendor/mini-flux/EventEmitter';
+
 import AppAction from '../app-action';
+const AuthStore = require('../auth-store');
 import SquidStore from '../squid-store';
-import AuthStore from '../auth-store';
+
 const dispatcher = new EventEmitter();
 export const action = new AppAction(dispatcher);
-const squidStore = new SquidStore(dispatcher);
 const authStore = new AuthStore(dispatcher);
+const squidStore = new SquidStore(dispatcher);
 
 // Constants
 const directiveName = 'ikaApp';
 
-class IkaAppController {
-  constructor($rootScope, $firebaseArray) {
-    IkaAppController.$inject = ['$rootScope', '$firebaseArray'];
-    this.$rootScope = $rootScope;
-    this.$firebaseArray = $firebaseArray;
+/**
+ * @param {IAngularStatic} ng - angular
+ * @param {Firebase} ref
+ * @return {AngularFireArray}
+ */
+export function createFirebaseArray(ng, ref) {
+  const $firebaseArray = ng
+    .element(document.querySelector('.ng-scope'))
+    .injector()
+    .get('$firebaseArray');
+  return $firebaseArray(ref.orderByChild('order'));
+}
 
+/**
+ * @param {SquidStore} store
+ * @returns {string}
+ */
+export function extractIkaId(store) {
+  if (!store || !store.selfData || !store.selfData.ikaId) {
+    return '';
+  }
+  return store.selfData.ikaId;
+}
+
+/**
+ * @param {SquidStore} store
+ * @returns {number}
+ */
+export function extractColorNumber(store) {
+  if (!store || !store.selfData) {
+    return 0;
+  }
+  if (store.colorNumber !== void 0 && store.colorNumber !== null) {
+    return store.colorNumber;
+  }
+
+  return store.selfData.colorNumber;
+}
+
+class IkaAppController {
+  constructor() {
     squidStore.on('CHANGE', this.onSquidStoreChange.bind(this));
     authStore .on('CHANGE', this.onAuthStoreChange .bind(this));
 
@@ -32,18 +69,11 @@ class IkaAppController {
    * @returns {void}
    */
   onSquidStoreChange() {
-    this.hordeOfSquid = this.$firebaseArray(squidStore.ref.orderByChild('order'));
+    this.colorNumber = extractColorNumber(squidStore);
+    this.hordeOfSquid = createFirebaseArray(angular, squidStore.ref);
+    this.ikaId = extractIkaId(squidStore.selfData);
     this.registered = squidStore.registered;
-
-    this.colorNumber = 0;
-    if (squidStore.selfData) {
-      this.ikaId = squidStore.selfData.ikaId;
-      this.colorNumber = squidStore.colorNumber !== void 0 && squidStore.colorNumber !== null
-        ? squidStore.colorNumber
-        : squidStore.selfData.colorNumber;
-    }
   }
-
   /**
    * @private
    * @returns {void}
