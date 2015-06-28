@@ -65,16 +65,14 @@ class SquidStore extends EventEmitter {
     }
 
     if (!this.registered) {
-      const now = Date.now();
       const data = {
         avatarUrl:    post.avatarUrl,
         colorNumber:  post.colorNumber,
         ikaId:        post.ikaId,
         siomeUid:     post.siomeUid,
         twitterId:    post.twitterId,
-        dateAdded:    now,
-        dateModified: now,
-        order:        now * -1 // reverse sort order
+        dateAdded:    Firebase.ServerValue.TIMESTAMP,
+        dateModified: Firebase.ServerValue.TIMESTAMP
       };
       this.ref.child(post.siomeUid).set(data, (err) => {
         if (err) {
@@ -83,8 +81,14 @@ class SquidStore extends EventEmitter {
           this.emit(CHANGE);
           return;
         }
-        this.registered = true;
-        this.emit(CHANGE);
+
+        this.ref.child(post.siomeUid).on('value', (snapshot) => {
+          const orderValue = snapshot.val().dateAdded * -1; // reverse sort
+          snapshot.ref().child('order').set(orderValue);
+
+          this.registered = true;
+          this.emit(CHANGE);
+        });
       });
     }
   }
