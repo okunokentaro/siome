@@ -12,6 +12,14 @@
           user-select: text;
 }
 
+@color-0: #e86b4e;
+@color-1: #2341a4;
+@color-2: #cb40cc;
+@color-3: #98f000;
+@color-4: #791e8a;
+@color-5: #75d1cc;
+@color-6: #3d3c2e;
+
 * {
   color: #333333;
   font-size: 100%;
@@ -31,8 +39,8 @@ ika-header {
   }
 
   p {
-    padding-top:    1.5rem;
-    padding-bottom: 3.0rem;
+    padding-top:    1.2rem;
+    padding-bottom: 1.2rem;
     margin: 0;
     font-size: 2rem;
     font-weight: bold;
@@ -42,20 +50,49 @@ ika-header {
 ika-entry-form {
   display: block;
   background: linear-gradient(#fff, rgba(255, 255, 255, 0));
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
 
   .login-info {
     padding: 1.4rem 0 2rem;
   }
-}
 
-@color-0: #e86b4e;
-@color-1: #2341a4;
-@color-2: #cb40cc;
-@color-3: #98f000;
-@color-4: #791e8a;
-@color-5: #75d1cc;
-@color-6: #3d3c2e;
+  .form-info {
+    margin: 1.5rem 0 1rem;
+    height: 1em;
+    line-height: 1em;
+  }
+
+  .form-info.error {
+    font-weight: bold;
+  }
+
+  .error.kumano { color: @color-0; }
+  .error.anemo { color: @color-2; }
+  .error.judgekun { color: @color-6; }
+
+  label[for="ikaId"] {
+    position: relative;
+    top: -1px;
+    width: 80px;
+    margin-right: 1rem;
+    img {
+      width: 100%;
+    }
+  }
+
+  input {
+    text-align: left;
+    border: 2px solid #333;
+    border-radius: 4px;
+    padding: .5rem 1rem;
+    width: 17em;
+    font-size: 1.8rem;
+  }
+
+  .error input {
+    border: 2px solid @color-0;
+  }
+}
 
 ika-palette {
   .user-select-none;

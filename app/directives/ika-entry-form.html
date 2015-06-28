@@ -8,12 +8,18 @@
     <button id="ika-logout" ng-click="ikaEntryForm.logout()">ログアウト</button>
   </p>
 
-  <form>
-    <label for="ikaId">イカID</label><input type="text" id="ikaId" ng-model="ikaEntryForm.post.ikaId" required>
+  <form ng-class="{error: ikaEntryForm.formInfo.type === 'error'}">
+    <label for="ikaId"><img src="./app/images/label-ikaid.png" alt="イカID"></label><input type="text" id="ikaId" ng-model="ikaEntryForm.post.ikaId" required>
     <ika-palette ika-color-number="ikaEntryForm.colorNumber"></ika-palette>
-    <button ng-if="!ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.save()">save</button>
-    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.update()">update</button>
-    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.remove()">remove</button>
-    <p class="form-info" ng-class="'form-'+[ikaEntryForm.formInfo.type]">{{ikaEntryForm.formInfo.message}}</p>
+    <button ng-if="!ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.save()">
+      save
+    </button>
+    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.update()">
+      update
+    </button>
+    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.remove()">
+      remove
+    </button>
+    <p class="form-info" ng-class="[ikaEntryForm.formInfo.type]+' '+[ikaEntryForm.formInfo.character]">{{ikaEntryForm.formInfo.message}}</p>
   </form>
 </div>
