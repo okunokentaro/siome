@@ -124,6 +124,7 @@ ika-balloon .balloon-body {
   border-style: solid;
 }
 ika-balloon .flex-wrapper {
+  display: -webkit-flex;
   display: flex;
 }
 ika-balloon .avatar-side img {
