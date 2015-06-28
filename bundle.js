@@ -137,7 +137,7 @@ appConfig.$inject = ['$routeProvider'];
 
 _angular2['default'].module(_constants.appName).config(appConfig);
 
-},{"./constants":4,"angular":17,"angular-route":15,"angularfire":19,"firebase":20}],3:[function(require,module,exports){
+},{"./constants":4,"angular":18,"angular-route":16,"angularfire":20,"firebase":21}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -266,7 +266,7 @@ var AuthStore = (function (_EventEmitter) {
 exports['default'] = AuthStore;
 module.exports = exports['default'];
 
-},{"./constants":4,"./vendor/mini-flux/EventEmitter":13,"angular":17,"firebase":20}],4:[function(require,module,exports){
+},{"./constants":4,"./vendor/mini-flux/EventEmitter":14,"angular":18,"firebase":21}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -394,7 +394,7 @@ var IkaAppController = (function () {
     value: function onSquidStoreChange() {
       this.colorNumber = (0, _ikaAppFunc.extractColorNumber)(squidStore);
       this.hordeOfSquid = (0, _ikaAppFunc.createFirebaseArray)(_angular2['default'], squidStore.ref);
-      this.ikaId = (0, _ikaAppFunc.extractIkaId)(squidStore.selfData);
+      this.ikaId = (0, _ikaAppFunc.extractIkaId)(squidStore);
       this.registered = squidStore.registered;
     }
   }, {
@@ -430,7 +430,7 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../app-action":1,"../auth-store":3,"../constants":4,"../squid-store":12,"../vendor/mini-flux/EventEmitter":13,"./ika-app-func":5,"angular":17}],7:[function(require,module,exports){
+},{"../app-action":1,"../auth-store":3,"../constants":4,"../squid-store":13,"../vendor/mini-flux/EventEmitter":14,"./ika-app-func":5,"angular":18}],7:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -536,7 +536,7 @@ function ikaIkaid() {
 
 _angular2['default'].module(_constants.appName).directive('ikaIkaid', ikaIkaid);
 
-},{"../constants":4,"angular":17,"moment":22,"moment/locale/ja":21}],8:[function(require,module,exports){
+},{"../constants":4,"angular":18,"moment":23,"moment/locale/ja":22}],8:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -565,7 +565,7 @@ var IkaEntryFormController = (function () {
     this.post = this.post || {};
     this.formInfo = {
       type: 'info',
-      message: '登録時に自動で呟くことはありません'
+      message: '自動でツイートすることはありません　下のボタンからシェアしよう！'
     };
 
     this.watch();
@@ -750,7 +750,7 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../constants":4,"./ika-app":6,"angular":17}],9:[function(require,module,exports){
+},{"../constants":4,"./ika-app":6,"angular":18}],9:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -773,7 +773,7 @@ function ddo() {
 
 _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
-},{"../constants":4,"angular":17}],10:[function(require,module,exports){
+},{"../constants":4,"angular":18}],10:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -829,7 +829,94 @@ _angular2['default'].module(_constants.appName).directive(directiveName, ddo);
 
 // noop
 
-},{"../constants":4,"./ika-app":6,"angular":17}],11:[function(require,module,exports){
+},{"../constants":4,"./ika-app":6,"angular":18}],11:[function(require,module,exports){
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var _angular = require('angular');
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _constants = require('../constants');
+
+var directiveName = 'ikaSns';
+
+var IkaSnsController = (function () {
+  function IkaSnsController() {
+    _classCallCheck(this, IkaSnsController);
+  }
+
+  _createClass(IkaSnsController, [{
+    key: 'tweetText',
+
+    /**
+     * @param {string} ikaId
+     * @param {number} n - colorNumber
+     * @returns {string}
+     */
+    value: function tweetText(ikaId, n) {
+      switch (n) {
+        case 0:
+          return 'イカID: ' + ikaId + ' でやってます！';
+        case 1:
+          return 'イカID: ' + ikaId + ' でやってます！';
+        case 2:
+          return 'イカID: ' + ikaId + ' でやってるよ！　イカ、よろしくーーー！';
+        case 3:
+          return 'イカID: ' + ikaId + ' でやってるよ　イカ、よろしく〜〜〜';
+        case 4:
+          return 'ちゅーーす　イカID: ' + ikaId + ' でやってんだわ　よろしくネー';
+        case 5:
+          return 'イカID: ' + ikaId + ' でやっとるぞ　確認されたしーッ！！';
+        case 6:
+          return 'に"！（イカID: ' + ikaId + ' でやっている！）';
+        default:
+          return 'イカID: ' + ikaId + ' でやってます！';
+      }
+      return 'イカID: ' + ikaId + ' でやってます！';
+    }
+  }]);
+
+  return IkaSnsController;
+})();
+
+function link() {
+  setTimeout(function () {
+    !(function (d, s, id) {
+      var js,
+          fjs = d.getElementsByTagName(s)[0],
+          p = /^http:/.test(d.location) ? 'http' : 'https';if (!d.getElementById(id)) {
+        js = d.createElement(s);js.id = id;js.src = p + '://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);
+      }
+    })(document, 'script', 'twitter-wjs');
+  }, 800);
+}
+
+function ddo() {
+  return {
+    restrict: 'E',
+    templateUrl: './app/directives/ika-sns.html',
+    link: link,
+    scope: {},
+    controller: IkaSnsController,
+    controllerAs: directiveName,
+    bindToController: {
+      colorNumber: '=ikaColorNumber',
+      ikaId: '=ikaIkaId'
+    }
+  };
+}
+
+_angular2['default'].module(_constants.appName).directive(directiveName, ddo);
+
+// noop
+
+},{"../constants":4,"angular":18}],12:[function(require,module,exports){
 'use strict';
 
 require('./app');
@@ -844,7 +931,9 @@ require('./directives/ika-palette');
 
 require('./directives/ika-balloon');
 
-},{"./app":2,"./directives/ika-app":6,"./directives/ika-balloon":7,"./directives/ika-entry-form":8,"./directives/ika-header":9,"./directives/ika-palette":10}],12:[function(require,module,exports){
+require('./directives/ika-sns');
+
+},{"./app":2,"./directives/ika-app":6,"./directives/ika-balloon":7,"./directives/ika-entry-form":8,"./directives/ika-header":9,"./directives/ika-palette":10,"./directives/ika-sns":11}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1026,7 +1115,7 @@ var SquidStore = (function (_EventEmitter) {
 exports['default'] = SquidStore;
 module.exports = exports['default'];
 
-},{"./constants":4,"./vendor/mini-flux/EventEmitter":13,"firebase":20}],13:[function(require,module,exports){
+},{"./constants":4,"./vendor/mini-flux/EventEmitter":14,"firebase":21}],14:[function(require,module,exports){
 // https://github.com/azu/mini-flux/blob/master/src/EventEmitter.js
 // LICENSE : MIT
 "use strict";
@@ -1086,7 +1175,7 @@ var EventEmitter = (function () {
 exports["default"] = EventEmitter;
 module.exports = exports["default"];
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.1
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -2079,11 +2168,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":14}],16:[function(require,module,exports){
+},{"./angular-route":15}],17:[function(require,module,exports){
 /**
  * @license AngularJS v1.4.1
  * (c) 2010-2015 Google, Inc. http://angularjs.org
@@ -30378,11 +30467,11 @@ var minlengthDirective = function() {
 })(window, document);
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":16}],18:[function(require,module,exports){
+},{"./angular":17}],19:[function(require,module,exports){
 /*!
  * AngularFire is the officially supported AngularJS binding for Firebase. Firebase
  * is a full backend so you don't need servers to build your Angular app. AngularFire
@@ -32658,11 +32747,11 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
     }
 })();
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 require('./dist/angularfire');
 module.exports = 'firebase';
 
-},{"./dist/angularfire":18}],20:[function(require,module,exports){
+},{"./dist/angularfire":19}],21:[function(require,module,exports){
 /*! @license Firebase v2.2.7
     License: https://www.firebase.com/terms/terms-of-service.html */
 (function() {var h,aa=this;function n(a){return void 0!==a}function ba(){}function ca(a){a.ub=function(){return a.tf?a.tf:a.tf=new a}}
@@ -32928,7 +33017,7 @@ function Nc(a,b){J(!b||!0===a||!1===a,"Can't turn on custom loggers persistently
 
 module.exports = Firebase;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 //! moment.js locale configuration
 //! locale : japanese (ja)
 //! author : LI Long : https://github.com/baryon
@@ -32993,7 +33082,7 @@ module.exports = Firebase;
     return ja;
 
 }));
-},{"../moment":22}],22:[function(require,module,exports){
+},{"../moment":23}],23:[function(require,module,exports){
 //! moment.js
 //! version : 2.10.3
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -36105,4 +36194,4 @@ module.exports = Firebase;
     return _moment;
 
 }));
-},{}]},{},[11]);
+},{}]},{},[12]);

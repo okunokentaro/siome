@@ -114,6 +114,9 @@ ika-entry-form .posting[disabled="disabled"] {
 ika-entry-form .error .posting p {
   display: none;
 }
+ika-sns {
+  display: block;
+}
 ika-palette {
   -webkit-user-select: none;
   -moz-user-select: none;
