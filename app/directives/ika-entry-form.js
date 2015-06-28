@@ -12,7 +12,7 @@ class IkaEntryFormController {
     this.post = this.post || {};
     this.formInfo = {
       type:    'info',
-      message: ''
+      message: '登録時に自動で呟くことはありません'
     };
 
     this.watch();
@@ -111,6 +111,11 @@ class IkaEntryFormController {
   remove() {
     if (!this.authStatus) { return console.error('Cannot remove because you have not logged in'); }
     action.removeSquid(this.authStatus.uid);
+
+    this.formInfo = {
+      type:    'info',
+      message: '登録時に自動で呟くことはありません'
+    };
   }
 
   /**

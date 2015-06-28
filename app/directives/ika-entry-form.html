@@ -11,14 +11,14 @@
   <form ng-class="{error: ikaEntryForm.formInfo.type === 'error'}">
     <label for="ikaId"><img src="./app/images/label-ikaid.png" alt="イカID"></label><input type="text" id="ikaId" ng-model="ikaEntryForm.post.ikaId" required>
     <ika-palette ika-color-number="ikaEntryForm.colorNumber"></ika-palette>
-    <button ng-if="!ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.save()">
-      save
+    <button class="posting save" ng-if="!ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.save()">
+      <img src="./app/images/button-save.png" alt="登録する">
     </button>
-    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.update()">
-      update
+    <button class="posting update" ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.update()">
+      <img src="./app/images/button-update.png" alt="更新する">
     </button>
-    <button ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.remove()">
-      remove
+    <button class="posting remove" ng-if= "ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.remove()">
+      <img src="./app/images/button-remove.png" alt="取り消す">
     </button>
     <p class="form-info" ng-class="[ikaEntryForm.formInfo.type]+' '+[ikaEntryForm.formInfo.character]">{{ikaEntryForm.formInfo.message}}</p>
   </form>

@@ -92,6 +92,53 @@ ika-entry-form {
   .error input {
     border: 2px solid @color-0;
   }
+
+  .posting {
+    height: 3em;
+    margin-left: 1rem;
+    -webkit-appearance: none;
+
+    border-radius: 8px;
+    transition: border .3s ease, background-color .3s ease;
+
+    img {
+      position: relative;
+      height: 2em;
+    }
+
+    &.save {
+      background: #00aeef;
+      border: 2px solid darken(#00aeef, 20%);
+
+      p {
+        margin-top: 1.2rem;
+        font-size: 1.2rem;
+      }
+
+      img {
+        top: 2px;
+      }
+    }
+
+    &.update {
+      background: #fff;
+      border: 2px solid @color-1;
+    }
+
+    &.remove {
+      background: #fff;
+      border: 2px solid @color-0;
+    }
+
+    &[disabled="disabled"] {
+      transition: opacity .3s ease;
+      opacity: .2;
+    }
+  }
+
+  .error .posting p {
+    display: none;
+  }
 }
 
 ika-palette {
