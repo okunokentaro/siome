@@ -64,41 +64,29 @@ class SquidStore extends EventEmitter {
       this.ref.off('child_added', this.disposer);
     }
 
-    let onValueDisposer = void 0;
-    const checkingExists = new Promise((resolve) => {
-      onValueDisposer = this.ref
-        .orderByChild('siomeUid')
-        .equalTo(post.siomeUid)
-        .on('value', (snapshot) => {
-          let alreadyExists = false;
-          if (snapshot.val()) {
-            console.error('Cannot added because already exists');
-            alreadyExists = true;
-          }
-          resolve(alreadyExists);
-        });
-    });
-
-    checkingExists.then((exists) => {
-      if (!exists && !this.registered) {
-        const now = Date.now();
-        const data = {
-          avatarUrl:    post.avatarUrl,
-          colorNumber:  post.colorNumber,
-          ikaId:        post.ikaId,
-          siomeUid:     post.siomeUid,
-          twitterId:    post.twitterId,
-          dateAdded:    now,
-          dateModified: now,
-          order:        now * -1 // reverse sort order
-        };
-        this.ref.off('value', onValueDisposer);
-        this.ref.child(post.siomeUid).set(data);
-      }
-
-      this.registered = true;
-      this.emit(CHANGE);
-    });
+    if (!this.registered) {
+      const now = Date.now();
+      const data = {
+        avatarUrl:    post.avatarUrl,
+        colorNumber:  post.colorNumber,
+        ikaId:        post.ikaId,
+        siomeUid:     post.siomeUid,
+        twitterId:    post.twitterId,
+        dateAdded:    now,
+        dateModified: now,
+        order:        now * -1 // reverse sort order
+      };
+      this.ref.child(post.siomeUid).set(data, (err) => {
+        if (err) {
+          console.error(err);
+          this.registered = false;
+          this.emit(CHANGE);
+          return;
+        }
+        this.registered = true;
+        this.emit(CHANGE);
+      });
+    }
   }
 
   /**
