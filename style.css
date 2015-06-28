@@ -34,7 +34,7 @@ ika-header p {
 }
 ika-entry-form {
   display: block;
-  background: linear-gradient(#ffffff, rgba(0, 0, 0, 0));
+  background: linear-gradient(#ffffff, rgba(255, 255, 255, 0));
   padding-bottom: 2rem;
 }
 ika-entry-form .login-info {
