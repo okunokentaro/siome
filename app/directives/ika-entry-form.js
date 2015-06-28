@@ -12,7 +12,7 @@ class IkaEntryFormController {
     this.post = this.post || {};
     this.formInfo = {
       type:    'info',
-      message: '登録時に自動で呟くことはありません'
+      message: '自動でツイートすることはありません　下のボタンからシェアしよう！'
     };
 
     this.watch();
