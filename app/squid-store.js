@@ -95,11 +95,14 @@ class SquidStore extends EventEmitter {
 
   /**
    * @private
-   * @param {{twitterId: string, ikaId: string, siomeUid: string}} post
+   * @param {{twitterId: string, ikaId: string, siomeUid: string, colorNumber: number}} post
    * @returns {void}
    */
   onUpdateSquid(post) {
-    this.ref.child(post.siomeUid).set(post);
+    const fbSquid = this.ref.child(post.siomeUid);
+    fbSquid.child('ikaId').set(post.ikaId);
+    fbSquid.child('colorNumber').set(post.colorNumber);
+    fbSquid.child('dateModified').set(Firebase.ServerValue.TIMESTAMP);
   }
 
   /**
