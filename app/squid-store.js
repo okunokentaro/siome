@@ -7,7 +7,7 @@ const CHANGE = 'CHANGE';
 class SquidStore extends EventEmitter {
   constructor(dispatcher) {
     super();
-    this.ref = new Firebase(`${firebaseUrl}/squid`);
+    this.ref = new Firebase(`${firebaseUrl}/squids`);
 
     /* eslint-disable no-multi-spaces */
     dispatcher.on('applicationReady', this.onApplicationReady.bind(this));
@@ -86,14 +86,14 @@ class SquidStore extends EventEmitter {
           avatarUrl:    post.avatarUrl,
           colorNumber:  post.colorNumber,
           ikaId:        post.ikaId,
-          siomeAuthId:  post.siomeAuthId,
+          uid:          post.siomeAuthId,
           twitterId:    post.twitterId,
           dateAdded:    now,
           dateModified: now,
           order:        now * -1 // reverse sort order
         };
         this.ref.off('value', onValueDisposer);
-        this.ref.push(data);
+        this.ref.child(post.siomeAuthId).set(data);
       }
 
       this.registered = true;
