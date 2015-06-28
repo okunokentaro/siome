@@ -35,14 +35,14 @@ class SquidStore extends EventEmitter {
 
   /**
    * @private
-   * @param {string} siomeAuthId
+   * @param {string} siomeUid
    * @returns {void}
    */
-  onLoad(siomeAuthId) {
+  onLoad(siomeUid) {
     this.ref
-      .orderByChild('siomeAuthId')
+      .orderByChild('siomeUid')
       .on('child_added', (snapshot) => {
-        if (snapshot.val().siomeAuthId === siomeAuthId) {
+        if (snapshot.val().siomeUid === siomeUid) {
           this.registered = true;
           this.selfData = {
             ikaId:       snapshot.val().ikaId,
@@ -55,7 +55,7 @@ class SquidStore extends EventEmitter {
 
   /**
    * @private
-   * @param {{twitterId: string, ikaId: string, siomeAuthId: string}} post
+   * @param {{twitterId: string, ikaId: string, siomeUid: string}} post
    * @returns {void}
    */
   onAddSquid(post) {
@@ -67,8 +67,8 @@ class SquidStore extends EventEmitter {
     let onValueDisposer = void 0;
     const checkingExists = new Promise((resolve) => {
       onValueDisposer = this.ref
-        .orderByChild('siomeAuthId')
-        .equalTo(post.siomeAuthId)
+        .orderByChild('siomeUid')
+        .equalTo(post.siomeUid)
         .on('value', (snapshot) => {
           let alreadyExists = false;
           if (snapshot.val()) {
@@ -86,14 +86,14 @@ class SquidStore extends EventEmitter {
           avatarUrl:    post.avatarUrl,
           colorNumber:  post.colorNumber,
           ikaId:        post.ikaId,
-          uid:          post.siomeAuthId,
+          siomeUid:     post.siomeUid,
           twitterId:    post.twitterId,
           dateAdded:    now,
           dateModified: now,
           order:        now * -1 // reverse sort order
         };
         this.ref.off('value', onValueDisposer);
-        this.ref.child(post.siomeAuthId).set(data);
+        this.ref.child(post.siomeUid).set(data);
       }
 
       this.registered = true;
@@ -103,13 +103,13 @@ class SquidStore extends EventEmitter {
 
   /**
    * @private
-   * @param {{twitterId: string, ikaId: string, siomeAuthId: string}} post
+   * @param {{twitterId: string, ikaId: string, siomeUid: string}} post
    * @returns {void}
    */
   onUpdateSquid(post) {
     this.ref
-      .orderByChild('siomeAuthId')
-      .equalTo(post.siomeAuthId)
+      .orderByChild('siomeUid')
+      .equalTo(post.siomeUid)
       .on('child_added', (snapshot) => {
         post.dateModified = Date.now();
         snapshot.ref().update(post);
@@ -119,13 +119,13 @@ class SquidStore extends EventEmitter {
 
   /**
    * @private
-   * @param {string} siomeAuthId
+   * @param {string} siomeUid
    * @returns {void}
    */
-  onRemoveSquid(siomeAuthId) {
+  onRemoveSquid(siomeUid) {
     this.disposer = this.ref
-      .orderByChild('siomeAuthId')
-      .equalTo(siomeAuthId)
+      .orderByChild('siomeUid')
+      .equalTo(siomeUid)
       .on('child_added', (snapshot) => {
         snapshot.ref().remove();
         this.registered = false;
