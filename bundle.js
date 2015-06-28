@@ -867,14 +867,14 @@ var SquidStore = (function (_EventEmitter) {
 
     /**
      * @private
-     * @param {string} siomeAuthId
+     * @param {string} siomeUid
      * @returns {void}
      */
-    value: function onLoad(siomeAuthId) {
+    value: function onLoad(siomeUid) {
       var _this = this;
 
-      this.ref.orderByChild('siomeAuthId').on('child_added', function (snapshot) {
-        if (snapshot.val().siomeAuthId === siomeAuthId) {
+      this.ref.orderByChild('siomeUid').on('child_added', function (snapshot) {
+        if (snapshot.val().siomeUid === siomeUid) {
           _this.registered = true;
           _this.selfData = {
             ikaId: snapshot.val().ikaId,
@@ -889,7 +889,7 @@ var SquidStore = (function (_EventEmitter) {
 
     /**
      * @private
-     * @param {{twitterId: string, ikaId: string, siomeAuthId: string}} post
+     * @param {{twitterId: string, ikaId: string, siomeUid: string}} post
      * @returns {void}
      */
     value: function onAddSquid(post) {
@@ -900,71 +900,60 @@ var SquidStore = (function (_EventEmitter) {
         this.ref.off('child_added', this.disposer);
       }
 
-      var onValueDisposer = void 0;
-      var checkingExists = new Promise(function (resolve) {
-        onValueDisposer = _this2.ref.orderByChild('siomeAuthId').equalTo(post.siomeAuthId).on('value', function (snapshot) {
-          var alreadyExists = false;
-          if (snapshot.val()) {
-            console.error('Cannot added because already exists');
-            alreadyExists = true;
+      if (!this.registered) {
+        var data = {
+          avatarUrl: post.avatarUrl,
+          colorNumber: post.colorNumber,
+          ikaId: post.ikaId,
+          siomeUid: post.siomeUid,
+          twitterId: post.twitterId,
+          dateAdded: _firebase2['default'].ServerValue.TIMESTAMP,
+          dateModified: _firebase2['default'].ServerValue.TIMESTAMP
+        };
+        this.ref.child(post.siomeUid).set(data, function (err) {
+          if (err) {
+            console.error(err);
+            _this2.registered = false;
+            _this2.emit(CHANGE);
+            return;
           }
-          resolve(alreadyExists);
+
+          _this2.ref.child(post.siomeUid).on('value', function (snapshot) {
+            var orderValue = snapshot.val().dateAdded * -1; // reverse sort
+            snapshot.ref().child('order').set(orderValue);
+
+            _this2.registered = true;
+            _this2.emit(CHANGE);
+          });
         });
-      });
-
-      checkingExists.then(function (exists) {
-        if (!exists && !_this2.registered) {
-          var now = Date.now();
-          var data = {
-            avatarUrl: post.avatarUrl,
-            colorNumber: post.colorNumber,
-            ikaId: post.ikaId,
-            uid: post.siomeAuthId,
-            twitterId: post.twitterId,
-            dateAdded: now,
-            dateModified: now,
-            order: now * -1 // reverse sort order
-          };
-          _this2.ref.off('value', onValueDisposer);
-          _this2.ref.child(post.siomeAuthId).set(data);
-        }
-
-        _this2.registered = true;
-        _this2.emit(CHANGE);
-      });
+      }
     }
   }, {
     key: 'onUpdateSquid',
 
     /**
      * @private
-     * @param {{twitterId: string, ikaId: string, siomeAuthId: string}} post
+     * @param {{twitterId: string, ikaId: string, siomeUid: string}} post
      * @returns {void}
      */
     value: function onUpdateSquid(post) {
-      var _this3 = this;
-
-      this.ref.orderByChild('siomeAuthId').equalTo(post.siomeAuthId).on('child_added', function (snapshot) {
-        post.dateModified = Date.now();
-        snapshot.ref().update(post);
-        _this3.emit(CHANGE);
-      });
+      this.ref.child(post.siomeUid).set(post);
     }
   }, {
     key: 'onRemoveSquid',
 
     /**
      * @private
-     * @param {string} siomeAuthId
+     * @param {string} siomeUid
      * @returns {void}
      */
-    value: function onRemoveSquid(siomeAuthId) {
-      var _this4 = this;
+    value: function onRemoveSquid(siomeUid) {
+      var _this3 = this;
 
-      this.disposer = this.ref.orderByChild('siomeAuthId').equalTo(siomeAuthId).on('child_added', function (snapshot) {
+      this.disposer = this.ref.orderByChild('siomeUid').equalTo(siomeUid).on('child_added', function (snapshot) {
         snapshot.ref().remove();
-        _this4.registered = false;
-        _this4.emit(CHANGE);
+        _this3.registered = false;
+        _this3.emit(CHANGE);
       });
     }
   }, {
