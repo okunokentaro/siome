@@ -43,13 +43,38 @@ class IkaEntryFormController {
   }
 
   /**
+   * @param {string} ikaId
+   * @returns {boolean}
+   */
+  isValidIkaId(ikaId) {
+    if (!ikaId || ikaId === '') {
+      this.formInfo = {type: 'error', character: 'kumano', message: 'クマノ「何も入力されてねぇぞ！！」'};
+      return false;
+    }
+
+    if (ikaId.length < 6) {
+      this.formInfo = {type: 'error', character: 'anemo', message: 'アネモ「…ぁっ、6文字以上で　おねがいします…」'};
+      return false;
+    }
+
+    if (16 < ikaId.length) {
+      this.formInfo = {type: 'error', character: 'kumano', message: 'クマノ「16文字超えてっぞ！」'};
+      return false;
+    }
+
+    if (!/^[a-zA-Z0-9._\-]{6,16}$/.test(ikaId)) {
+      this.formInfo = {type: 'error', character: 'judgekun', message: 'に\"！（使えるのは半角英数と._-の記号だけだ！）'};
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
    * @returns {void}
    */
   save() {
-    if (!this.post.ikaId || this.post.ikaId === '') {
-      this.formInfo = {type: 'error', message: '何も入力されてない'};
-      return;
-    }
+    if (!this.isValidIkaId(this.post.ikaId)) { return; }
 
     this.resetPostable(Date, window, this.$rootScope);
 
@@ -65,7 +90,12 @@ class IkaEntryFormController {
    * @returns {void}
    */
   update() {
-    if (!this.authStatus) { return console.error('Cannot update because you have not logged in'); }
+    if (!this.authStatus) {
+      console.error('Cannot update because you have not logged in');
+      return;
+    }
+    if (!this.isValidIkaId(this.post.ikaId)) { return; }
+
     this.resetPostable(Date, window, this.$rootScope);
 
     this.post.colorNumber = this.colorNumber;
@@ -99,7 +129,7 @@ class IkaEntryFormController {
     }, waitTime);
 
     this.remaining = waitTime / 1000;
-    this.formInfo = {type: 'info', message: 'ちょっと待ってね'};
+    this.formInfo = {type: 'info', character: '', message: 'ちょっと待ってね'};
     const timer = window.setInterval(() => {
       this.remaining--;
       if (this.remaining === 0) {
