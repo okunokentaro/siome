@@ -520,7 +520,7 @@ _angular2['default'].module(_constants.appName).directive('ikaTwi', ikaTwi);
 function ikaIkaid() {
   return {
     restrict: 'E',
-    template: '<span class="ika-id-label">イカID:</span><span class="ika-id">{{id}}</span>',
+    template: '<span class="ika-id-label">イカID:&nbsp;</span><span class="ika-id">{{id}}</span>',
     scope: {
       id: '=iId'
     }
@@ -941,6 +941,7 @@ var SquidStore = (function (_EventEmitter) {
       fbSquid.child('ikaId').set(post.ikaId);
       fbSquid.child('colorNumber').set(post.colorNumber);
       fbSquid.child('dateModified').set(_firebase2['default'].ServerValue.TIMESTAMP);
+      this.emit(CHANGE);
     }
   }, {
     key: 'onRemoveSquid',
