@@ -9,7 +9,7 @@
   </p>
 
   <form ng-class="{error: ikaEntryForm.formInfo.type === 'error'}">
-    <label for="ikaId"><img src="./app/images/label-ikaid.png" alt="イカID"></label><input type="text" id="ikaId" ng-model="ikaEntryForm.post.ikaId" required>
+    <label for="ikaId"><img src="./app/images/label-ikaid.png" alt="イカID"></label><input type="text" id="ikaId" ng-model="ikaEntryForm.post.ikaId">
     <ika-palette ika-color-number="ikaEntryForm.colorNumber"></ika-palette>
     <button class="posting save" ng-if="!ikaEntryForm.registered" ng-disabled="!ikaEntryForm.postable" ng-click="ikaEntryForm.save()">
       <img src="./app/images/button-save.png" alt="登録する">
