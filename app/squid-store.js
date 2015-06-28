@@ -103,6 +103,7 @@ class SquidStore extends EventEmitter {
     fbSquid.child('ikaId').set(post.ikaId);
     fbSquid.child('colorNumber').set(post.colorNumber);
     fbSquid.child('dateModified').set(Firebase.ServerValue.TIMESTAMP);
+    this.emit(CHANGE);
   }
 
   /**
