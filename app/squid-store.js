@@ -64,41 +64,33 @@ class SquidStore extends EventEmitter {
       this.ref.off('child_added', this.disposer);
     }
 
-    let onValueDisposer = void 0;
-    const checkingExists = new Promise((resolve) => {
-      onValueDisposer = this.ref
-        .orderByChild('siomeUid')
-        .equalTo(post.siomeUid)
-        .on('value', (snapshot) => {
-          let alreadyExists = false;
-          if (snapshot.val()) {
-            console.error('Cannot added because already exists');
-            alreadyExists = true;
-          }
-          resolve(alreadyExists);
+    if (!this.registered) {
+      const data = {
+        avatarUrl:    post.avatarUrl,
+        colorNumber:  post.colorNumber,
+        ikaId:        post.ikaId,
+        siomeUid:     post.siomeUid,
+        twitterId:    post.twitterId,
+        dateAdded:    Firebase.ServerValue.TIMESTAMP,
+        dateModified: Firebase.ServerValue.TIMESTAMP
+      };
+      this.ref.child(post.siomeUid).set(data, (err) => {
+        if (err) {
+          console.error(err);
+          this.registered = false;
+          this.emit(CHANGE);
+          return;
+        }
+
+        this.ref.child(post.siomeUid).on('value', (snapshot) => {
+          const orderValue = snapshot.val().dateAdded * -1; // reverse sort
+          snapshot.ref().child('order').set(orderValue);
+
+          this.registered = true;
+          this.emit(CHANGE);
         });
-    });
-
-    checkingExists.then((exists) => {
-      if (!exists && !this.registered) {
-        const now = Date.now();
-        const data = {
-          avatarUrl:    post.avatarUrl,
-          colorNumber:  post.colorNumber,
-          ikaId:        post.ikaId,
-          siomeUid:     post.siomeUid,
-          twitterId:    post.twitterId,
-          dateAdded:    now,
-          dateModified: now,
-          order:        now * -1 // reverse sort order
-        };
-        this.ref.off('value', onValueDisposer);
-        this.ref.child(post.siomeUid).set(data);
-      }
-
-      this.registered = true;
-      this.emit(CHANGE);
-    });
+      });
+    }
   }
 
   /**
@@ -107,14 +99,7 @@ class SquidStore extends EventEmitter {
    * @returns {void}
    */
   onUpdateSquid(post) {
-    this.ref
-      .orderByChild('siomeUid')
-      .equalTo(post.siomeUid)
-      .on('child_added', (snapshot) => {
-        post.dateModified = Date.now();
-        snapshot.ref().update(post);
-        this.emit(CHANGE);
-      });
+    this.ref.child(post.siomeUid).set(post);
   }
 
   /**
