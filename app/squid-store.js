@@ -107,14 +107,7 @@ class SquidStore extends EventEmitter {
    * @returns {void}
    */
   onUpdateSquid(post) {
-    this.ref
-      .orderByChild('siomeUid')
-      .equalTo(post.siomeUid)
-      .on('child_added', (snapshot) => {
-        post.dateModified = Date.now();
-        snapshot.ref().update(post);
-        this.emit(CHANGE);
-      });
+    this.ref.child(post.siomeUid).set(post);
   }
 
   /**
